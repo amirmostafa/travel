@@ -1,0 +1,11 @@
+{
+  "travelApp": {
+    "RoomType": {
+      "null": "",
+      "SINGLE": "SINGLE",
+      "DOUBLE": "DOUBLE",
+      "SUITE": "SUITE",
+      "FAMILY": "FAMILY"
+    }
+  }
+}

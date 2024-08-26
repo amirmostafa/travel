@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (roomPrice()) {
+      <div>
+        <h2 data-cy="roomPriceDetailsHeading"><span jhiTranslate="travelApp.roomPrice.detail.title">Room Price</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ roomPrice()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.roomPrice.price">Price</span></dt>
+          <dd>
+            <span>{{ roomPrice()!.price }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.roomPrice.fromDate">From Date</span></dt>
+          <dd>
+            <span>{{ roomPrice()!.fromDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.roomPrice.toDate">To Date</span></dt>
+          <dd>
+            <span>{{ roomPrice()!.toDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.roomPrice.room">Room</span></dt>
+          <dd>
+            @if (roomPrice()!.room) {
+              <div>
+                <a [routerLink]="['/room', roomPrice()!.room?.id, 'view']">{{ roomPrice()!.room?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/room-price', roomPrice()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

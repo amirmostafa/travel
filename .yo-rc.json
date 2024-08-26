@@ -1,0 +1,21 @@
+{
+  "generator-jhipster": {
+    "applicationType": "monolith",
+    "authenticationType": "jwt",
+    "baseName": "travel",
+    "buildTool": "maven",
+    "clientFramework": "angular",
+    "devDatabaseType": "mysql",
+    "devServerPort": 4200,
+    "enableTranslation": true,
+    "entities": ["Agency", "TourPackage", "Customer", "Booking", "Hotel", "Room", "RoomPrice"],
+    "jhipsterVersion": "8.6.0",
+    "jwtSecretKey": "ZDg4ZTJiZGJhMjEwOWEwNmVmNWNkMzEzOTY5ODE3YTE2YWRhYWMyNzkzNmRlNWMzYjllMjJhZDE4MmNjNTEwMWVjZjQ5NjQwNmEwYmVhNTE4YTJhYWI1ZmQ1ZWJlOGI1OGU3MWUzZTYxMDYwOTIyMzY4MzIwODY1YWE4YTllMTk=",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1724702608000,
+    "nativeLanguage": "en",
+    "packageFolder": "com/travel",
+    "packageName": "com.travel",
+    "prodDatabaseType": "mysql"
+  }
+}

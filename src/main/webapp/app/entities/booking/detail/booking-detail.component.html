@@ -1,0 +1,76 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (booking()) {
+      <div>
+        <h2 data-cy="bookingDetailsHeading"><span jhiTranslate="travelApp.booking.detail.title">Booking</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ booking()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.bookingDate">Booking Date</span></dt>
+          <dd>
+            <span>{{ booking()!.bookingDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.startDate">Start Date</span></dt>
+          <dd>
+            <span>{{ booking()!.startDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.endDate">End Date</span></dt>
+          <dd>
+            <span>{{ booking()!.endDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.status">Status</span></dt>
+          <dd>
+            <span [jhiTranslate]="'travelApp.BookingStatus.' + (booking()!.status ?? 'null')">{{
+              { null: '', PENDING: 'PENDING', CONFIRMED: 'CONFIRMED', CANCELLED: 'CANCELLED' }[booking()!.status ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.totalPrice">Total Price</span></dt>
+          <dd>
+            <span>{{ booking()!.totalPrice }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.room">Room</span></dt>
+          <dd>
+            @if (booking()!.room) {
+              <div>
+                <a [routerLink]="['/room', booking()!.room?.id, 'view']">{{ booking()!.room?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.tourPackage">Tour Package</span></dt>
+          <dd>
+            @if (booking()!.tourPackage) {
+              <div>
+                <a [routerLink]="['/tour-package', booking()!.tourPackage?.id, 'view']">{{ booking()!.tourPackage?.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="travelApp.booking.customer">Customer</span></dt>
+          <dd>
+            @if (booking()!.customer) {
+              <div>
+                <a [routerLink]="['/customer', booking()!.customer?.id, 'view']">{{ booking()!.customer?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/booking', booking()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

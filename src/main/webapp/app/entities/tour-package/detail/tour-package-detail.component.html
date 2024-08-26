@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (tourPackage()) {
+      <div>
+        <h2 data-cy="tourPackageDetailsHeading"><span jhiTranslate="travelApp.tourPackage.detail.title">Tour Package</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ tourPackage()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.tourPackage.name">Name</span></dt>
+          <dd>
+            <span>{{ tourPackage()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.tourPackage.description">Description</span></dt>
+          <dd>
+            <span>{{ tourPackage()!.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.tourPackage.price">Price</span></dt>
+          <dd>
+            <span>{{ tourPackage()!.price }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.tourPackage.durationDays">Duration Days</span></dt>
+          <dd>
+            <span>{{ tourPackage()!.durationDays }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.tourPackage.available">Available</span></dt>
+          <dd>
+            <span>{{ tourPackage()!.available }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.tourPackage.agency">Agency</span></dt>
+          <dd>
+            @if (tourPackage()!.agency) {
+              <div>
+                <a [routerLink]="['/agency', tourPackage()!.agency?.id, 'view']">{{ tourPackage()!.agency?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/tour-package', tourPackage()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

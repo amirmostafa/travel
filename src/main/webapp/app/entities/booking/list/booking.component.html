@@ -1,0 +1,159 @@
+<div>
+  <h2 id="page-heading" data-cy="BookingHeading">
+    <span jhiTranslate="travelApp.booking.home.title">Bookings</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="travelApp.booking.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-booking"
+        [routerLink]="['/booking/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="travelApp.booking.home.createLabel">Create a new Booking</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (bookings?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="travelApp.booking.home.notFound">No Bookings found</span>
+    </div>
+  }
+
+  @if (bookings && bookings.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="bookingDate">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.bookingDate">Booking Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="startDate">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.startDate">Start Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="endDate">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.endDate">End Date</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="status">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.status">Status</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="totalPrice">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.totalPrice">Total Price</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="room.id">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.room">Room</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="tourPackage.id">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.tourPackage">Tour Package</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="customer.id">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.booking.customer">Customer</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
+          @for (booking of bookings; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/booking', booking.id, 'view']">{{ booking.id }}</a>
+              </td>
+              <td>{{ booking.bookingDate | formatMediumDatetime }}</td>
+              <td>{{ booking.startDate | formatMediumDatetime }}</td>
+              <td>{{ booking.endDate | formatMediumDatetime }}</td>
+              <td [jhiTranslate]="'travelApp.BookingStatus.' + (booking.status ?? 'null')">
+                {{ { null: '', PENDING: 'PENDING', CONFIRMED: 'CONFIRMED', CANCELLED: 'CANCELLED' }[booking.status ?? 'null'] }}
+              </td>
+              <td>{{ booking.totalPrice }}</td>
+              <td>
+                @if (booking.room) {
+                  <div>
+                    <a [routerLink]="['/room', booking.room.id, 'view']">{{ booking.room.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (booking.tourPackage) {
+                  <div>
+                    <a [routerLink]="['/tour-package', booking.tourPackage.id, 'view']">{{ booking.tourPackage.id }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (booking.customer) {
+                  <div>
+                    <a [routerLink]="['/customer', booking.customer.id, 'view']">{{ booking.customer.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/booking', booking.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/booking', booking.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(booking)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

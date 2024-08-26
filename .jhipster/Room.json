@@ -1,0 +1,52 @@
+{
+  "annotations": {
+    "changelogDate": "20240826200228"
+  },
+  "applications": ["travel"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "roomNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "RoomType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "SINGLE,DOUBLE,SUITE,FAMILY"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text"
+    },
+    {
+      "fieldName": "discountPercentage",
+      "fieldType": "Double",
+      "fieldValidateRules": ["min", "max"],
+      "fieldValidateRulesMax": "100",
+      "fieldValidateRulesMin": "0"
+    }
+  ],
+  "name": "Room",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "roomPrice",
+      "otherEntityRelationshipName": "room",
+      "relationshipName": "roomPrice",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "hotel",
+      "otherEntityRelationshipName": "room",
+      "relationshipName": "hotel",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

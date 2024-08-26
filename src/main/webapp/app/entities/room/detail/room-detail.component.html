@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (room()) {
+      <div>
+        <h2 data-cy="roomDetailsHeading"><span jhiTranslate="travelApp.room.detail.title">Room</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ room()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.room.roomNumber">Room Number</span></dt>
+          <dd>
+            <span>{{ room()!.roomNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.room.type">Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'travelApp.RoomType.' + (room()!.type ?? 'null')">{{
+              { null: '', SINGLE: 'SINGLE', DOUBLE: 'DOUBLE', SUITE: 'SUITE', FAMILY: 'FAMILY' }[room()!.type ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.room.description">Description</span></dt>
+          <dd>
+            <span>{{ room()!.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.room.discountPercentage">Discount Percentage</span></dt>
+          <dd>
+            <span>{{ room()!.discountPercentage }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.room.hotel">Hotel</span></dt>
+          <dd>
+            @if (room()!.hotel) {
+              <div>
+                <a [routerLink]="['/hotel', room()!.hotel?.id, 'view']">{{ room()!.hotel?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/room', room()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

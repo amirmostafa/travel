@@ -1,0 +1,97 @@
+application {
+  config {
+    baseName travel
+    applicationType monolith
+    packageName com.travel
+    authenticationType jwt
+    prodDatabaseType mysql
+    devDatabaseType mysql
+    buildTool maven
+    clientFramework angular
+    enableTranslation true
+    languages [en]
+  }
+  entities *
+}
+
+entity Agency {
+  name String required
+  address String required
+  contactNumber String required
+  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+  website String
+}
+
+entity TourPackage {
+  name String required
+  description String required
+  price BigDecimal required min(0)
+  durationDays Integer required min(1)
+  available Boolean required
+}
+
+entity Customer {
+  firstName String required
+  lastName String required
+  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+  phoneNumber String required
+  address String
+}
+
+entity Booking {
+  bookingDate Instant required
+  startDate Instant required
+  endDate Instant required
+  status BookingStatus required
+  totalPrice BigDecimal required min(0)
+}
+
+entity Hotel {
+  name String required
+  address String required
+  starRating Integer required min(1) max(5)
+  contactNumber String required
+  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+}
+
+entity Room {
+  roomNumber String required
+  type RoomType required
+  description TextBlob
+  discountPercentage Double min(0) max(100)
+}
+
+entity RoomPrice {
+  price BigDecimal required min(0)
+  fromDate Instant required
+  toDate Instant required
+}
+
+enum BookingStatus {
+  PENDING, CONFIRMED, CANCELLED
+}
+
+enum RoomType {
+  SINGLE, DOUBLE, SUITE, FAMILY
+}
+
+relationship OneToMany {
+  Agency{tourPackage} to TourPackage{agency}
+  Customer{booking} to Booking{customer}
+  Hotel{room} to Room{hotel}
+  Room{roomPrice} to RoomPrice{room}
+}
+
+relationship ManyToOne {
+  Booking{room} to Room
+  Booking{tourPackage} to TourPackage
+}
+
+paginate TourPackage with pagination
+paginate Customer, Booking, Hotel, Room, RoomPrice with infinite-scroll
+
+service all with serviceClass
+
+dto all with mapstruct
+
+search TourPackage, Customer, Hotel, Room, RoomPrice, Booking with elasticsearch

@@ -1,0 +1,38 @@
+{
+  "annotations": {
+    "changelogDate": "20240826200328"
+  },
+  "applications": ["travel"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "fromDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "toDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "RoomPrice",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "room",
+      "otherEntityRelationshipName": "roomPrice",
+      "relationshipName": "room",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

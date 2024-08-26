@@ -1,0 +1,130 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-room-heading" data-cy="RoomCreateUpdateHeading" jhiTranslate="travelApp.room.home.createOrEditLabel">
+        Create or edit a Room
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="travelApp.room.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_roomNumber" jhiTranslate="travelApp.room.roomNumber">Room Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="roomNumber"
+            id="field_roomNumber"
+            data-cy="roomNumber"
+            formControlName="roomNumber"
+          />
+          @if (editForm.get('roomNumber')!.invalid && (editForm.get('roomNumber')!.dirty || editForm.get('roomNumber')!.touched)) {
+            <div>
+              @if (editForm.get('roomNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_type" jhiTranslate="travelApp.room.type">Type</label>
+          <select class="form-control" name="type" formControlName="type" id="field_type" data-cy="type">
+            <option [ngValue]="null">{{ 'travelApp.RoomType.null' | translate }}</option>
+            @for (roomType of roomTypeValues; track $index) {
+              <option [value]="roomType">{{ 'travelApp.RoomType.' + roomType | translate }}</option>
+            }
+          </select>
+          @if (editForm.get('type')!.invalid && (editForm.get('type')!.dirty || editForm.get('type')!.touched)) {
+            <div>
+              @if (editForm.get('type')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="travelApp.room.description">Description</label>
+          <textarea
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_discountPercentage" jhiTranslate="travelApp.room.discountPercentage"
+            >Discount Percentage</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="discountPercentage"
+            id="field_discountPercentage"
+            data-cy="discountPercentage"
+            formControlName="discountPercentage"
+          />
+          @if (
+            editForm.get('discountPercentage')!.invalid &&
+            (editForm.get('discountPercentage')!.dirty || editForm.get('discountPercentage')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('discountPercentage')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >This field should be at least 0.</small
+                >
+              }
+              @if (editForm.get('discountPercentage')?.errors?.max) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.max" [translateValues]="{ max: '100' }"
+                  >This field cannot be more than 100.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('discountPercentage')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_hotel" jhiTranslate="travelApp.room.hotel">Hotel</label>
+          <select class="form-control" id="field_hotel" data-cy="hotel" name="hotel" formControlName="hotel" [compareWith]="compareHotel">
+            <option [ngValue]="null"></option>
+            @for (hotelOption of hotelsSharedCollection; track $index) {
+              <option [ngValue]="hotelOption">{{ hotelOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

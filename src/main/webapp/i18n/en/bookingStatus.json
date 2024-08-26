@@ -1,0 +1,10 @@
+{
+  "travelApp": {
+    "BookingStatus": {
+      "null": "",
+      "PENDING": "PENDING",
+      "CONFIRMED": "CONFIRMED",
+      "CANCELLED": "CANCELLED"
+    }
+  }
+}
