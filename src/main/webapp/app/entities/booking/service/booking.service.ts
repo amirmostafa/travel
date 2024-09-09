@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IBooking, NewBooking } from '../booking.model';
@@ -102,9 +103,9 @@ export class BookingService {
   protected convertDateFromClient<T extends IBooking | NewBooking | PartialUpdateBooking>(booking: T): RestOf<T> {
     return {
       ...booking,
-      bookingDate: booking.bookingDate?.toJSON() ?? null,
-      startDate: booking.startDate?.toJSON() ?? null,
-      endDate: booking.endDate?.toJSON() ?? null,
+      bookingDate: booking.bookingDate?.format(DATE_FORMAT) ?? null,
+      startDate: booking.startDate?.format(DATE_FORMAT) ?? null,
+      endDate: booking.endDate?.format(DATE_FORMAT) ?? null,
     };
   }
 

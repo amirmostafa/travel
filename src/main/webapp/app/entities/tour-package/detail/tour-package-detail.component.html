@@ -35,14 +35,6 @@
           <dd>
             <span>{{ tourPackage()!.available }}</span>
           </dd>
-          <dt><span jhiTranslate="travelApp.tourPackage.agency">Agency</span></dt>
-          <dd>
-            @if (tourPackage()!.agency) {
-              <div>
-                <a [routerLink]="['/agency', tourPackage()!.agency?.id, 'view']">{{ tourPackage()!.agency?.id }}</a>
-              </div>
-            }
-          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

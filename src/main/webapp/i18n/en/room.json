@@ -23,6 +23,7 @@
       "description": "Description",
       "discountPercentage": "Discount Percentage",
       "roomPrice": "Room Price",
+      "images": "Images",
       "hotel": "Hotel"
     }
   }

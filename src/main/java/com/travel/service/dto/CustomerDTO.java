@@ -27,6 +27,10 @@ public class CustomerDTO implements Serializable {
 
     private String address;
 
+    @NotNull
+    @Min(value = 0)
+    private Integer loyaltyPoints;
+
     public Long getId() {
         return id;
     }
@@ -75,6 +79,14 @@ public class CustomerDTO implements Serializable {
         this.address = address;
     }
 
+    public Integer getLoyaltyPoints() {
+        return loyaltyPoints;
+    }
+
+    public void setLoyaltyPoints(Integer loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -106,6 +118,7 @@ public class CustomerDTO implements Serializable {
             ", email='" + getEmail() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", address='" + getAddress() + "'" +
+            ", loyaltyPoints=" + getLoyaltyPoints() +
             "}";
     }
 }

@@ -1,7 +1,9 @@
 package com.travel.web.rest;
 
 import com.travel.repository.RoomPriceRepository;
+import com.travel.service.RoomPriceQueryService;
 import com.travel.service.RoomPriceService;
+import com.travel.service.criteria.RoomPriceCriteria;
 import com.travel.service.dto.RoomPriceDTO;
 import com.travel.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,16 @@ public class RoomPriceResource {
 
     private final RoomPriceRepository roomPriceRepository;
 
-    public RoomPriceResource(RoomPriceService roomPriceService, RoomPriceRepository roomPriceRepository) {
+    private final RoomPriceQueryService roomPriceQueryService;
+
+    public RoomPriceResource(
+        RoomPriceService roomPriceService,
+        RoomPriceRepository roomPriceRepository,
+        RoomPriceQueryService roomPriceQueryService
+    ) {
         this.roomPriceService = roomPriceService;
         this.roomPriceRepository = roomPriceRepository;
+        this.roomPriceQueryService = roomPriceQueryService;
     }
 
     /**
@@ -139,14 +148,31 @@ public class RoomPriceResource {
      * {@code GET  /room-prices} : get all the roomPrices.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of roomPrices in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<RoomPriceDTO>> getAllRoomPrices(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of RoomPrices");
-        Page<RoomPriceDTO> page = roomPriceService.findAll(pageable);
+    public ResponseEntity<List<RoomPriceDTO>> getAllRoomPrices(
+        RoomPriceCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get RoomPrices by criteria: {}", criteria);
+
+        Page<RoomPriceDTO> page = roomPriceQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /room-prices/count} : count all the roomPrices.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countRoomPrices(RoomPriceCriteria criteria) {
+        log.debug("REST request to count RoomPrices by criteria: {}", criteria);
+        return ResponseEntity.ok().body(roomPriceQueryService.countByCriteria(criteria));
     }
 
     /**

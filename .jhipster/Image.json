@@ -1,0 +1,32 @@
+{
+  "annotations": {
+    "changelogDate": "20240908171544"
+  },
+  "applications": ["travel"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "url",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Image",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "room",
+      "otherEntityRelationshipName": "images",
+      "relationshipName": "room",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

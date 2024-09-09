@@ -1,0 +1,138 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-loyalty-transaction-heading"
+        data-cy="LoyaltyTransactionCreateUpdateHeading"
+        jhiTranslate="travelApp.loyaltyTransaction.home.createOrEditLabel"
+      >
+        Create or edit a Loyalty Transaction
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="travelApp.loyaltyTransaction.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_date" jhiTranslate="travelApp.loyaltyTransaction.date">Date</label>
+          <div class="input-group">
+            <input
+              id="field_date"
+              data-cy="date"
+              type="text"
+              class="form-control"
+              name="date"
+              ngbDatepicker
+              #dateDp="ngbDatepicker"
+              formControlName="date"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+          </div>
+          @if (editForm.get('date')!.invalid && (editForm.get('date')!.dirty || editForm.get('date')!.touched)) {
+            <div>
+              @if (editForm.get('date')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_points" jhiTranslate="travelApp.loyaltyTransaction.points">Points</label>
+          <input type="number" class="form-control" name="points" id="field_points" data-cy="points" formControlName="points" />
+          @if (editForm.get('points')!.invalid && (editForm.get('points')!.dirty || editForm.get('points')!.touched)) {
+            <div>
+              @if (editForm.get('points')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('points')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_transactionType" jhiTranslate="travelApp.loyaltyTransaction.transactionType"
+            >Transaction Type</label
+          >
+          <select
+            class="form-control"
+            name="transactionType"
+            formControlName="transactionType"
+            id="field_transactionType"
+            data-cy="transactionType"
+          >
+            <option [ngValue]="null">{{ 'travelApp.TransactionType.null' | translate }}</option>
+            @for (transactionType of transactionTypeValues; track $index) {
+              <option [value]="transactionType">{{ 'travelApp.TransactionType.' + transactionType | translate }}</option>
+            }
+          </select>
+          @if (
+            editForm.get('transactionType')!.invalid && (editForm.get('transactionType')!.dirty || editForm.get('transactionType')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('transactionType')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="travelApp.loyaltyTransaction.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_customer" jhiTranslate="travelApp.loyaltyTransaction.customer">Customer</label>
+          <select
+            class="form-control"
+            id="field_customer"
+            data-cy="customer"
+            name="customer"
+            formControlName="customer"
+            [compareWith]="compareCustomer"
+          >
+            <option [ngValue]="null"></option>
+            @for (customerOption of customersSharedCollection; track $index) {
+              <option [ngValue]="customerOption">{{ customerOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

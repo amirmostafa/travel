@@ -7,8 +7,6 @@ import com.travel.service.mapper.HotelMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,18 +72,6 @@ public class HotelService {
             })
             .map(hotelRepository::save)
             .map(hotelMapper::toDto);
-    }
-
-    /**
-     * Get all the hotels.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public Page<HotelDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Hotels");
-        return hotelRepository.findAll(pageable).map(hotelMapper::toDto);
     }
 
     /**

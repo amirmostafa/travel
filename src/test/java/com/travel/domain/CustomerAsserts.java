@@ -51,7 +51,8 @@ public class CustomerAsserts {
             .satisfies(e -> assertThat(e.getLastName()).as("check lastName").isEqualTo(actual.getLastName()))
             .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
             .satisfies(e -> assertThat(e.getPhoneNumber()).as("check phoneNumber").isEqualTo(actual.getPhoneNumber()))
-            .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()));
+            .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()))
+            .satisfies(e -> assertThat(e.getLoyaltyPoints()).as("check loyaltyPoints").isEqualTo(actual.getLoyaltyPoints()));
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.travel.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -45,10 +44,6 @@ public class TourPackage implements Serializable {
     @NotNull
     @Column(name = "available", nullable = false)
     private Boolean available;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "tourPackages" }, allowSetters = true)
-    private Agency agency;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -128,19 +123,6 @@ public class TourPackage implements Serializable {
 
     public void setAvailable(Boolean available) {
         this.available = available;
-    }
-
-    public Agency getAgency() {
-        return this.agency;
-    }
-
-    public void setAgency(Agency agency) {
-        this.agency = agency;
-    }
-
-    public TourPackage agency(Agency agency) {
-        this.setAgency(agency);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

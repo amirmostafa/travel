@@ -1,0 +1,107 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-currency-heading" data-cy="CurrencyCreateUpdateHeading" jhiTranslate="travelApp.currency.home.createOrEditLabel">
+        Create or edit a Currency
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="travelApp.currency.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_code" jhiTranslate="travelApp.currency.code">Code</label>
+          <input type="text" class="form-control" name="code" id="field_code" data-cy="code" formControlName="code" />
+          @if (editForm.get('code')!.invalid && (editForm.get('code')!.dirty || editForm.get('code')!.touched)) {
+            <div>
+              @if (editForm.get('code')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="travelApp.currency.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_symbol" jhiTranslate="travelApp.currency.symbol">Symbol</label>
+          <input type="text" class="form-control" name="symbol" id="field_symbol" data-cy="symbol" formControlName="symbol" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_exchangeRate" jhiTranslate="travelApp.currency.exchangeRate">Exchange Rate</label>
+          <input
+            type="number"
+            class="form-control"
+            name="exchangeRate"
+            id="field_exchangeRate"
+            data-cy="exchangeRate"
+            formControlName="exchangeRate"
+          />
+          @if (editForm.get('exchangeRate')!.invalid && (editForm.get('exchangeRate')!.dirty || editForm.get('exchangeRate')!.touched)) {
+            <div>
+              @if (editForm.get('exchangeRate')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              @if (editForm.get('exchangeRate')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >This field should be at least 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('exchangeRate')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_isDefault" jhiTranslate="travelApp.currency.isDefault">Is Default</label>
+          <input type="checkbox" class="form-check" name="isDefault" id="field_isDefault" data-cy="isDefault" formControlName="isDefault" />
+          @if (editForm.get('isDefault')!.invalid && (editForm.get('isDefault')!.dirty || editForm.get('isDefault')!.touched)) {
+            <div>
+              @if (editForm.get('isDefault')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

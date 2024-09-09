@@ -15,7 +15,15 @@
         "booking": "Booking",
         "hotel": "Hotel",
         "room": "Room",
-        "roomPrice": "Room Price"
+        "roomPrice": "Room Price",
+        "currency": "Currency",
+        "testimonial": "Testimonial",
+        "aboutUs": "About Us",
+        "agencyService": "Agency Service",
+        "payment": "Payment",
+        "loyaltyProgram": "Loyalty Program",
+        "loyaltyTransaction": "Loyalty Transaction",
+        "image": "Image"
       },
       "account": {
         "main": "Account",

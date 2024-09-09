@@ -61,9 +61,5 @@ public class TourPackageAsserts {
      * @param expected the expected entity
      * @param actual the actual entity
      */
-    public static void assertTourPackageUpdatableRelationshipsEquals(TourPackage expected, TourPackage actual) {
-        assertThat(expected)
-            .as("Verify TourPackage relationships")
-            .satisfies(e -> assertThat(e.getAgency()).as("check agency").isEqualTo(actual.getAgency()));
-    }
+    public static void assertTourPackageUpdatableRelationshipsEquals(TourPackage expected, TourPackage actual) {}
 }

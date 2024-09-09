@@ -33,17 +33,10 @@
       "fieldValidateRules": ["required"]
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "TourPackage",
-  "pagination": "pagination",
-  "relationships": [
-    {
-      "otherEntityName": "agency",
-      "otherEntityRelationshipName": "tourPackage",
-      "relationshipName": "agency",
-      "relationshipSide": "right",
-      "relationshipType": "many-to-one"
-    }
-  ],
+  "pagination": "infinite-scroll",
+  "relationships": [],
   "searchEngine": "no",
   "service": "serviceClass"
 }

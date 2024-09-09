@@ -2,11 +2,12 @@ package com.travel.domain;
 
 import static com.travel.domain.BookingTestSamples.*;
 import static com.travel.domain.CustomerTestSamples.*;
-import static com.travel.domain.RoomTestSamples.*;
-import static com.travel.domain.TourPackageTestSamples.*;
+import static com.travel.domain.PaymentTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.travel.web.rest.TestUtil;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class BookingTest {
@@ -26,27 +27,25 @@ class BookingTest {
     }
 
     @Test
-    void roomTest() {
+    void paymentTest() {
         Booking booking = getBookingRandomSampleGenerator();
-        Room roomBack = getRoomRandomSampleGenerator();
+        Payment paymentBack = getPaymentRandomSampleGenerator();
 
-        booking.setRoom(roomBack);
-        assertThat(booking.getRoom()).isEqualTo(roomBack);
+        booking.addPayment(paymentBack);
+        assertThat(booking.getPayments()).containsOnly(paymentBack);
+        assertThat(paymentBack.getBooking()).isEqualTo(booking);
 
-        booking.room(null);
-        assertThat(booking.getRoom()).isNull();
-    }
+        booking.removePayment(paymentBack);
+        assertThat(booking.getPayments()).doesNotContain(paymentBack);
+        assertThat(paymentBack.getBooking()).isNull();
 
-    @Test
-    void tourPackageTest() {
-        Booking booking = getBookingRandomSampleGenerator();
-        TourPackage tourPackageBack = getTourPackageRandomSampleGenerator();
+        booking.payments(new HashSet<>(Set.of(paymentBack)));
+        assertThat(booking.getPayments()).containsOnly(paymentBack);
+        assertThat(paymentBack.getBooking()).isEqualTo(booking);
 
-        booking.setTourPackage(tourPackageBack);
-        assertThat(booking.getTourPackage()).isEqualTo(tourPackageBack);
-
-        booking.tourPackage(null);
-        assertThat(booking.getTourPackage()).isNull();
+        booking.setPayments(new HashSet<>());
+        assertThat(booking.getPayments()).doesNotContain(paymentBack);
+        assertThat(paymentBack.getBooking()).isNull();
     }
 
     @Test

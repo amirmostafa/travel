@@ -31,16 +31,10 @@
       "fieldType": "String"
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Agency",
-  "relationships": [
-    {
-      "otherEntityName": "tourPackage",
-      "otherEntityRelationshipName": "agency",
-      "relationshipName": "tourPackage",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    }
-  ],
+  "pagination": "infinite-scroll",
+  "relationships": [],
   "searchEngine": "no",
   "service": "serviceClass"
 }

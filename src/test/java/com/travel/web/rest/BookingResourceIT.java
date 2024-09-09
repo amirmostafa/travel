@@ -11,14 +11,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.IntegrationTest;
 import com.travel.domain.Booking;
+import com.travel.domain.Customer;
 import com.travel.domain.enumeration.BookingStatus;
 import com.travel.repository.BookingRepository;
 import com.travel.service.dto.BookingDTO;
 import com.travel.service.mapper.BookingMapper;
 import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -39,20 +40,24 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class BookingResourceIT {
 
-    private static final Instant DEFAULT_BOOKING_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_BOOKING_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_BOOKING_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_BOOKING_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_BOOKING_DATE = LocalDate.ofEpochDay(-1L);
 
-    private static final Instant DEFAULT_START_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_START_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_START_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_START_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_START_DATE = LocalDate.ofEpochDay(-1L);
 
-    private static final Instant DEFAULT_END_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_END_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_END_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_END_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_END_DATE = LocalDate.ofEpochDay(-1L);
 
     private static final BookingStatus DEFAULT_STATUS = BookingStatus.PENDING;
     private static final BookingStatus UPDATED_STATUS = BookingStatus.CONFIRMED;
 
     private static final BigDecimal DEFAULT_TOTAL_PRICE = new BigDecimal(0);
     private static final BigDecimal UPDATED_TOTAL_PRICE = new BigDecimal(1);
+    private static final BigDecimal SMALLER_TOTAL_PRICE = new BigDecimal(0 - 1);
 
     private static final String ENTITY_API_URL = "/api/bookings";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -287,6 +292,412 @@ class BookingResourceIT {
             .andExpect(jsonPath("$.endDate").value(DEFAULT_END_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.totalPrice").value(sameNumber(DEFAULT_TOTAL_PRICE)));
+    }
+
+    @Test
+    @Transactional
+    void getBookingsByIdFiltering() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        Long id = booking.getId();
+
+        defaultBookingFiltering("id.equals=" + id, "id.notEquals=" + id);
+
+        defaultBookingFiltering("id.greaterThanOrEqual=" + id, "id.greaterThan=" + id);
+
+        defaultBookingFiltering("id.lessThanOrEqual=" + id, "id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByBookingDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where bookingDate equals to
+        defaultBookingFiltering("bookingDate.equals=" + DEFAULT_BOOKING_DATE, "bookingDate.equals=" + UPDATED_BOOKING_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByBookingDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where bookingDate in
+        defaultBookingFiltering(
+            "bookingDate.in=" + DEFAULT_BOOKING_DATE + "," + UPDATED_BOOKING_DATE,
+            "bookingDate.in=" + UPDATED_BOOKING_DATE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByBookingDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where bookingDate is not null
+        defaultBookingFiltering("bookingDate.specified=true", "bookingDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByBookingDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where bookingDate is greater than or equal to
+        defaultBookingFiltering(
+            "bookingDate.greaterThanOrEqual=" + DEFAULT_BOOKING_DATE,
+            "bookingDate.greaterThanOrEqual=" + UPDATED_BOOKING_DATE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByBookingDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where bookingDate is less than or equal to
+        defaultBookingFiltering(
+            "bookingDate.lessThanOrEqual=" + DEFAULT_BOOKING_DATE,
+            "bookingDate.lessThanOrEqual=" + SMALLER_BOOKING_DATE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByBookingDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where bookingDate is less than
+        defaultBookingFiltering("bookingDate.lessThan=" + UPDATED_BOOKING_DATE, "bookingDate.lessThan=" + DEFAULT_BOOKING_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByBookingDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where bookingDate is greater than
+        defaultBookingFiltering("bookingDate.greaterThan=" + SMALLER_BOOKING_DATE, "bookingDate.greaterThan=" + DEFAULT_BOOKING_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStartDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where startDate equals to
+        defaultBookingFiltering("startDate.equals=" + DEFAULT_START_DATE, "startDate.equals=" + UPDATED_START_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStartDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where startDate in
+        defaultBookingFiltering("startDate.in=" + DEFAULT_START_DATE + "," + UPDATED_START_DATE, "startDate.in=" + UPDATED_START_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStartDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where startDate is not null
+        defaultBookingFiltering("startDate.specified=true", "startDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStartDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where startDate is greater than or equal to
+        defaultBookingFiltering("startDate.greaterThanOrEqual=" + DEFAULT_START_DATE, "startDate.greaterThanOrEqual=" + UPDATED_START_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStartDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where startDate is less than or equal to
+        defaultBookingFiltering("startDate.lessThanOrEqual=" + DEFAULT_START_DATE, "startDate.lessThanOrEqual=" + SMALLER_START_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStartDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where startDate is less than
+        defaultBookingFiltering("startDate.lessThan=" + UPDATED_START_DATE, "startDate.lessThan=" + DEFAULT_START_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStartDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where startDate is greater than
+        defaultBookingFiltering("startDate.greaterThan=" + SMALLER_START_DATE, "startDate.greaterThan=" + DEFAULT_START_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByEndDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where endDate equals to
+        defaultBookingFiltering("endDate.equals=" + DEFAULT_END_DATE, "endDate.equals=" + UPDATED_END_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByEndDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where endDate in
+        defaultBookingFiltering("endDate.in=" + DEFAULT_END_DATE + "," + UPDATED_END_DATE, "endDate.in=" + UPDATED_END_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByEndDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where endDate is not null
+        defaultBookingFiltering("endDate.specified=true", "endDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByEndDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where endDate is greater than or equal to
+        defaultBookingFiltering("endDate.greaterThanOrEqual=" + DEFAULT_END_DATE, "endDate.greaterThanOrEqual=" + UPDATED_END_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByEndDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where endDate is less than or equal to
+        defaultBookingFiltering("endDate.lessThanOrEqual=" + DEFAULT_END_DATE, "endDate.lessThanOrEqual=" + SMALLER_END_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByEndDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where endDate is less than
+        defaultBookingFiltering("endDate.lessThan=" + UPDATED_END_DATE, "endDate.lessThan=" + DEFAULT_END_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByEndDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where endDate is greater than
+        defaultBookingFiltering("endDate.greaterThan=" + SMALLER_END_DATE, "endDate.greaterThan=" + DEFAULT_END_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStatusIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where status equals to
+        defaultBookingFiltering("status.equals=" + DEFAULT_STATUS, "status.equals=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStatusIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where status in
+        defaultBookingFiltering("status.in=" + DEFAULT_STATUS + "," + UPDATED_STATUS, "status.in=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByStatusIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where status is not null
+        defaultBookingFiltering("status.specified=true", "status.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByTotalPriceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where totalPrice equals to
+        defaultBookingFiltering("totalPrice.equals=" + DEFAULT_TOTAL_PRICE, "totalPrice.equals=" + UPDATED_TOTAL_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByTotalPriceIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where totalPrice in
+        defaultBookingFiltering("totalPrice.in=" + DEFAULT_TOTAL_PRICE + "," + UPDATED_TOTAL_PRICE, "totalPrice.in=" + UPDATED_TOTAL_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByTotalPriceIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where totalPrice is not null
+        defaultBookingFiltering("totalPrice.specified=true", "totalPrice.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByTotalPriceIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where totalPrice is greater than or equal to
+        defaultBookingFiltering(
+            "totalPrice.greaterThanOrEqual=" + DEFAULT_TOTAL_PRICE,
+            "totalPrice.greaterThanOrEqual=" + UPDATED_TOTAL_PRICE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByTotalPriceIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where totalPrice is less than or equal to
+        defaultBookingFiltering("totalPrice.lessThanOrEqual=" + DEFAULT_TOTAL_PRICE, "totalPrice.lessThanOrEqual=" + SMALLER_TOTAL_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByTotalPriceIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where totalPrice is less than
+        defaultBookingFiltering("totalPrice.lessThan=" + UPDATED_TOTAL_PRICE, "totalPrice.lessThan=" + DEFAULT_TOTAL_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByTotalPriceIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedBooking = bookingRepository.saveAndFlush(booking);
+
+        // Get all the bookingList where totalPrice is greater than
+        defaultBookingFiltering("totalPrice.greaterThan=" + SMALLER_TOTAL_PRICE, "totalPrice.greaterThan=" + DEFAULT_TOTAL_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllBookingsByCustomerIsEqualToSomething() throws Exception {
+        Customer customer;
+        if (TestUtil.findAll(em, Customer.class).isEmpty()) {
+            bookingRepository.saveAndFlush(booking);
+            customer = CustomerResourceIT.createEntity(em);
+        } else {
+            customer = TestUtil.findAll(em, Customer.class).get(0);
+        }
+        em.persist(customer);
+        em.flush();
+        booking.setCustomer(customer);
+        bookingRepository.saveAndFlush(booking);
+        Long customerId = customer.getId();
+        // Get all the bookingList where customer equals to customerId
+        defaultBookingShouldBeFound("customerId.equals=" + customerId);
+
+        // Get all the bookingList where customer equals to (customerId + 1)
+        defaultBookingShouldNotBeFound("customerId.equals=" + (customerId + 1));
+    }
+
+    private void defaultBookingFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {
+        defaultBookingShouldBeFound(shouldBeFound);
+        defaultBookingShouldNotBeFound(shouldNotBeFound);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultBookingShouldBeFound(String filter) throws Exception {
+        restBookingMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(booking.getId().intValue())))
+            .andExpect(jsonPath("$.[*].bookingDate").value(hasItem(DEFAULT_BOOKING_DATE.toString())))
+            .andExpect(jsonPath("$.[*].startDate").value(hasItem(DEFAULT_START_DATE.toString())))
+            .andExpect(jsonPath("$.[*].endDate").value(hasItem(DEFAULT_END_DATE.toString())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].totalPrice").value(hasItem(sameNumber(DEFAULT_TOTAL_PRICE))));
+
+        // Check, that the count call also returns 1
+        restBookingMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultBookingShouldNotBeFound(String filter) throws Exception {
+        restBookingMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restBookingMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

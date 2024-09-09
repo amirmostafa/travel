@@ -1,0 +1,132 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-loyalty-program-heading"
+        data-cy="LoyaltyProgramCreateUpdateHeading"
+        jhiTranslate="travelApp.loyaltyProgram.home.createOrEditLabel"
+      >
+        Create or edit a Loyalty Program
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id" jhiTranslate="travelApp.loyaltyProgram.id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="field_name" jhiTranslate="travelApp.loyaltyProgram.name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          @if (editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)) {
+            <div>
+              @if (editForm.get('name')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_description" jhiTranslate="travelApp.loyaltyProgram.description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_pointsPerDollar" jhiTranslate="travelApp.loyaltyProgram.pointsPerDollar"
+            >Points Per Dollar</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="pointsPerDollar"
+            id="field_pointsPerDollar"
+            data-cy="pointsPerDollar"
+            formControlName="pointsPerDollar"
+          />
+          @if (
+            editForm.get('pointsPerDollar')!.invalid && (editForm.get('pointsPerDollar')!.dirty || editForm.get('pointsPerDollar')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('pointsPerDollar')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              @if (editForm.get('pointsPerDollar')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >This field should be at least 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('pointsPerDollar')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_rewardThreshold" jhiTranslate="travelApp.loyaltyProgram.rewardThreshold"
+            >Reward Threshold</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="rewardThreshold"
+            id="field_rewardThreshold"
+            data-cy="rewardThreshold"
+            formControlName="rewardThreshold"
+          />
+          @if (
+            editForm.get('rewardThreshold')!.invalid && (editForm.get('rewardThreshold')!.dirty || editForm.get('rewardThreshold')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('rewardThreshold')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              @if (editForm.get('rewardThreshold')?.errors?.min) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.min" [translateValues]="{ min: '0' }"
+                  >This field should be at least 0.</small
+                >
+              }
+              <small
+                class="form-text text-danger"
+                [hidden]="!editForm.get('rewardThreshold')?.errors?.number"
+                jhiTranslate="entity.validation.number"
+                >This field should be a number.</small
+              >
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

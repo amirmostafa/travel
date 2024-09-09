@@ -1,6 +1,5 @@
 package com.travel.domain;
 
-import static com.travel.domain.AgencyTestSamples.*;
 import static com.travel.domain.TourPackageTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,17 +20,5 @@ class TourPackageTest {
 
         tourPackage2 = getTourPackageSample2();
         assertThat(tourPackage1).isNotEqualTo(tourPackage2);
-    }
-
-    @Test
-    void agencyTest() {
-        TourPackage tourPackage = getTourPackageRandomSampleGenerator();
-        Agency agencyBack = getAgencyRandomSampleGenerator();
-
-        tourPackage.setAgency(agencyBack);
-        assertThat(tourPackage.getAgency()).isEqualTo(agencyBack);
-
-        tourPackage.agency(null);
-        assertThat(tourPackage.getAgency()).isNull();
     }
 }

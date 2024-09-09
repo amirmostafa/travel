@@ -48,7 +48,9 @@ export class RoomFormService {
       type: new FormControl(roomRawValue.type, {
         validators: [Validators.required],
       }),
-      description: new FormControl(roomRawValue.description),
+      description: new FormControl(roomRawValue.description, {
+        validators: [Validators.maxLength(65535)],
+      }),
       discountPercentage: new FormControl(roomRawValue.discountPercentage, {
         validators: [Validators.min(0), Validators.max(100)],
       }),

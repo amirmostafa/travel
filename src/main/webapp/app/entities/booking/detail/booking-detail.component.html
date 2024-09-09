@@ -17,15 +17,15 @@
           </dd>
           <dt><span jhiTranslate="travelApp.booking.bookingDate">Booking Date</span></dt>
           <dd>
-            <span>{{ booking()!.bookingDate | formatMediumDatetime }}</span>
+            <span>{{ booking()!.bookingDate | formatMediumDate }}</span>
           </dd>
           <dt><span jhiTranslate="travelApp.booking.startDate">Start Date</span></dt>
           <dd>
-            <span>{{ booking()!.startDate | formatMediumDatetime }}</span>
+            <span>{{ booking()!.startDate | formatMediumDate }}</span>
           </dd>
           <dt><span jhiTranslate="travelApp.booking.endDate">End Date</span></dt>
           <dd>
-            <span>{{ booking()!.endDate | formatMediumDatetime }}</span>
+            <span>{{ booking()!.endDate | formatMediumDate }}</span>
           </dd>
           <dt><span jhiTranslate="travelApp.booking.status">Status</span></dt>
           <dd>
@@ -36,22 +36,6 @@
           <dt><span jhiTranslate="travelApp.booking.totalPrice">Total Price</span></dt>
           <dd>
             <span>{{ booking()!.totalPrice }}</span>
-          </dd>
-          <dt><span jhiTranslate="travelApp.booking.room">Room</span></dt>
-          <dd>
-            @if (booking()!.room) {
-              <div>
-                <a [routerLink]="['/room', booking()!.room?.id, 'view']">{{ booking()!.room?.id }}</a>
-              </div>
-            }
-          </dd>
-          <dt><span jhiTranslate="travelApp.booking.tourPackage">Tour Package</span></dt>
-          <dd>
-            @if (booking()!.tourPackage) {
-              <div>
-                <a [routerLink]="['/tour-package', booking()!.tourPackage?.id, 'view']">{{ booking()!.tourPackage?.id }}</a>
-              </div>
-            }
           </dd>
           <dt><span jhiTranslate="travelApp.booking.customer">Customer</span></dt>
           <dd>

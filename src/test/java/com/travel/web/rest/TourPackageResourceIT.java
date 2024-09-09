@@ -44,9 +44,11 @@ class TourPackageResourceIT {
 
     private static final BigDecimal DEFAULT_PRICE = new BigDecimal(0);
     private static final BigDecimal UPDATED_PRICE = new BigDecimal(1);
+    private static final BigDecimal SMALLER_PRICE = new BigDecimal(0 - 1);
 
     private static final Integer DEFAULT_DURATION_DAYS = 1;
     private static final Integer UPDATED_DURATION_DAYS = 2;
+    private static final Integer SMALLER_DURATION_DAYS = 1 - 1;
 
     private static final Boolean DEFAULT_AVAILABLE = false;
     private static final Boolean UPDATED_AVAILABLE = true;
@@ -284,6 +286,356 @@ class TourPackageResourceIT {
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.durationDays").value(DEFAULT_DURATION_DAYS))
             .andExpect(jsonPath("$.available").value(DEFAULT_AVAILABLE.booleanValue()));
+    }
+
+    @Test
+    @Transactional
+    void getTourPackagesByIdFiltering() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        Long id = tourPackage.getId();
+
+        defaultTourPackageFiltering("id.equals=" + id, "id.notEquals=" + id);
+
+        defaultTourPackageFiltering("id.greaterThanOrEqual=" + id, "id.greaterThan=" + id);
+
+        defaultTourPackageFiltering("id.lessThanOrEqual=" + id, "id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where name equals to
+        defaultTourPackageFiltering("name.equals=" + DEFAULT_NAME, "name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where name in
+        defaultTourPackageFiltering("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME, "name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where name is not null
+        defaultTourPackageFiltering("name.specified=true", "name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByNameContainsSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where name contains
+        defaultTourPackageFiltering("name.contains=" + DEFAULT_NAME, "name.contains=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where name does not contain
+        defaultTourPackageFiltering("name.doesNotContain=" + UPDATED_NAME, "name.doesNotContain=" + DEFAULT_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDescriptionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where description equals to
+        defaultTourPackageFiltering("description.equals=" + DEFAULT_DESCRIPTION, "description.equals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDescriptionIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where description in
+        defaultTourPackageFiltering(
+            "description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION,
+            "description.in=" + UPDATED_DESCRIPTION
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDescriptionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where description is not null
+        defaultTourPackageFiltering("description.specified=true", "description.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDescriptionContainsSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where description contains
+        defaultTourPackageFiltering("description.contains=" + DEFAULT_DESCRIPTION, "description.contains=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDescriptionNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where description does not contain
+        defaultTourPackageFiltering(
+            "description.doesNotContain=" + UPDATED_DESCRIPTION,
+            "description.doesNotContain=" + DEFAULT_DESCRIPTION
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByPriceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where price equals to
+        defaultTourPackageFiltering("price.equals=" + DEFAULT_PRICE, "price.equals=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByPriceIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where price in
+        defaultTourPackageFiltering("price.in=" + DEFAULT_PRICE + "," + UPDATED_PRICE, "price.in=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByPriceIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where price is not null
+        defaultTourPackageFiltering("price.specified=true", "price.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByPriceIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where price is greater than or equal to
+        defaultTourPackageFiltering("price.greaterThanOrEqual=" + DEFAULT_PRICE, "price.greaterThanOrEqual=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByPriceIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where price is less than or equal to
+        defaultTourPackageFiltering("price.lessThanOrEqual=" + DEFAULT_PRICE, "price.lessThanOrEqual=" + SMALLER_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByPriceIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where price is less than
+        defaultTourPackageFiltering("price.lessThan=" + UPDATED_PRICE, "price.lessThan=" + DEFAULT_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByPriceIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where price is greater than
+        defaultTourPackageFiltering("price.greaterThan=" + SMALLER_PRICE, "price.greaterThan=" + DEFAULT_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDurationDaysIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where durationDays equals to
+        defaultTourPackageFiltering("durationDays.equals=" + DEFAULT_DURATION_DAYS, "durationDays.equals=" + UPDATED_DURATION_DAYS);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDurationDaysIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where durationDays in
+        defaultTourPackageFiltering(
+            "durationDays.in=" + DEFAULT_DURATION_DAYS + "," + UPDATED_DURATION_DAYS,
+            "durationDays.in=" + UPDATED_DURATION_DAYS
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDurationDaysIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where durationDays is not null
+        defaultTourPackageFiltering("durationDays.specified=true", "durationDays.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDurationDaysIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where durationDays is greater than or equal to
+        defaultTourPackageFiltering(
+            "durationDays.greaterThanOrEqual=" + DEFAULT_DURATION_DAYS,
+            "durationDays.greaterThanOrEqual=" + UPDATED_DURATION_DAYS
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDurationDaysIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where durationDays is less than or equal to
+        defaultTourPackageFiltering(
+            "durationDays.lessThanOrEqual=" + DEFAULT_DURATION_DAYS,
+            "durationDays.lessThanOrEqual=" + SMALLER_DURATION_DAYS
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDurationDaysIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where durationDays is less than
+        defaultTourPackageFiltering("durationDays.lessThan=" + UPDATED_DURATION_DAYS, "durationDays.lessThan=" + DEFAULT_DURATION_DAYS);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByDurationDaysIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where durationDays is greater than
+        defaultTourPackageFiltering(
+            "durationDays.greaterThan=" + SMALLER_DURATION_DAYS,
+            "durationDays.greaterThan=" + DEFAULT_DURATION_DAYS
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByAvailableIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where available equals to
+        defaultTourPackageFiltering("available.equals=" + DEFAULT_AVAILABLE, "available.equals=" + UPDATED_AVAILABLE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByAvailableIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where available in
+        defaultTourPackageFiltering("available.in=" + DEFAULT_AVAILABLE + "," + UPDATED_AVAILABLE, "available.in=" + UPDATED_AVAILABLE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTourPackagesByAvailableIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedTourPackage = tourPackageRepository.saveAndFlush(tourPackage);
+
+        // Get all the tourPackageList where available is not null
+        defaultTourPackageFiltering("available.specified=true", "available.specified=false");
+    }
+
+    private void defaultTourPackageFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {
+        defaultTourPackageShouldBeFound(shouldBeFound);
+        defaultTourPackageShouldNotBeFound(shouldNotBeFound);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultTourPackageShouldBeFound(String filter) throws Exception {
+        restTourPackageMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tourPackage.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
+            .andExpect(jsonPath("$.[*].durationDays").value(hasItem(DEFAULT_DURATION_DAYS)))
+            .andExpect(jsonPath("$.[*].available").value(hasItem(DEFAULT_AVAILABLE.booleanValue())));
+
+        // Check, that the count call also returns 1
+        restTourPackageMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultTourPackageShouldNotBeFound(String filter) throws Exception {
+        restTourPackageMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restTourPackageMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

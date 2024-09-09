@@ -23,7 +23,11 @@
       "starRating": "Star Rating",
       "contactNumber": "Contact Number",
       "email": "Email",
-      "room": "Room"
+      "countryCode": "Country Code",
+      "cityCode": "City Code",
+      "imageUrl": "Image Url",
+      "room": "Room",
+      "testimonial": "Testimonial"
     }
   }
 }

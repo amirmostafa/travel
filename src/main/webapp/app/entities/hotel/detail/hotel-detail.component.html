@@ -35,6 +35,26 @@
           <dd>
             <span>{{ hotel()!.email }}</span>
           </dd>
+          <dt><span jhiTranslate="travelApp.hotel.countryCode">Country Code</span></dt>
+          <dd>
+            <span>{{ hotel()!.countryCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.hotel.cityCode">City Code</span></dt>
+          <dd>
+            <span>{{ hotel()!.cityCode }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.hotel.imageUrl">Image Url</span></dt>
+          <dd>
+            <span>{{ hotel()!.imageUrl }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.hotel.testimonial">Testimonial</span></dt>
+          <dd>
+            @if (hotel()!.testimonial) {
+              <div>
+                <a [routerLink]="['/testimonial', hotel()!.testimonial?.id, 'view']">{{ hotel()!.testimonial?.id }}</a>
+              </div>
+            }
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

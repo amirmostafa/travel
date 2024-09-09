@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (loyaltyProgram()) {
+      <div>
+        <h2 data-cy="loyaltyProgramDetailsHeading"><span jhiTranslate="travelApp.loyaltyProgram.detail.title">Loyalty Program</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ loyaltyProgram()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyProgram.name">Name</span></dt>
+          <dd>
+            <span>{{ loyaltyProgram()!.name }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyProgram.description">Description</span></dt>
+          <dd>
+            <span>{{ loyaltyProgram()!.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyProgram.pointsPerDollar">Points Per Dollar</span></dt>
+          <dd>
+            <span>{{ loyaltyProgram()!.pointsPerDollar }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyProgram.rewardThreshold">Reward Threshold</span></dt>
+          <dd>
+            <span>{{ loyaltyProgram()!.rewardThreshold }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/loyalty-program', loyaltyProgram()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

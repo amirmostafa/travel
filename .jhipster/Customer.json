@@ -29,8 +29,15 @@
     {
       "fieldName": "address",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "loyaltyPoints",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Customer",
   "pagination": "infinite-scroll",
   "relationships": [
@@ -38,6 +45,13 @@
       "otherEntityName": "booking",
       "otherEntityRelationshipName": "customer",
       "relationshipName": "booking",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "loyaltyTransaction",
+      "otherEntityRelationshipName": "customer",
+      "relationshipName": "loyaltyTransaction",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
     }

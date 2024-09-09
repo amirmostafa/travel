@@ -4,8 +4,6 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subject, from } from 'rxjs';
 
-import { IAgency } from 'app/entities/agency/agency.model';
-import { AgencyService } from 'app/entities/agency/service/agency.service';
 import { TourPackageService } from '../service/tour-package.service';
 import { ITourPackage } from '../tour-package.model';
 import { TourPackageFormService } from './tour-package-form.service';
@@ -18,7 +16,6 @@ describe('TourPackage Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let tourPackageFormService: TourPackageFormService;
   let tourPackageService: TourPackageService;
-  let agencyService: AgencyService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -41,43 +38,17 @@ describe('TourPackage Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     tourPackageFormService = TestBed.inject(TourPackageFormService);
     tourPackageService = TestBed.inject(TourPackageService);
-    agencyService = TestBed.inject(AgencyService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call Agency query and add missing value', () => {
-      const tourPackage: ITourPackage = { id: 456 };
-      const agency: IAgency = { id: 32313 };
-      tourPackage.agency = agency;
-
-      const agencyCollection: IAgency[] = [{ id: 3612 }];
-      jest.spyOn(agencyService, 'query').mockReturnValue(of(new HttpResponse({ body: agencyCollection })));
-      const additionalAgencies = [agency];
-      const expectedCollection: IAgency[] = [...additionalAgencies, ...agencyCollection];
-      jest.spyOn(agencyService, 'addAgencyToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ tourPackage });
-      comp.ngOnInit();
-
-      expect(agencyService.query).toHaveBeenCalled();
-      expect(agencyService.addAgencyToCollectionIfMissing).toHaveBeenCalledWith(
-        agencyCollection,
-        ...additionalAgencies.map(expect.objectContaining),
-      );
-      expect(comp.agenciesSharedCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const tourPackage: ITourPackage = { id: 456 };
-      const agency: IAgency = { id: 26251 };
-      tourPackage.agency = agency;
 
       activatedRoute.data = of({ tourPackage });
       comp.ngOnInit();
 
-      expect(comp.agenciesSharedCollection).toContain(agency);
       expect(comp.tourPackage).toEqual(tourPackage);
     });
   });
@@ -147,18 +118,6 @@ describe('TourPackage Management Update Component', () => {
       expect(tourPackageService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('Compare relationships', () => {
-    describe('compareAgency', () => {
-      it('Should forward to agencyService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(agencyService, 'compareAgency');
-        comp.compareAgency(entity, entity2);
-        expect(agencyService.compareAgency).toHaveBeenCalledWith(entity, entity2);
-      });
     });
   });
 });

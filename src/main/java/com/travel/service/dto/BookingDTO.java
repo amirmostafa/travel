@@ -4,7 +4,7 @@ import com.travel.domain.enumeration.BookingStatus;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -16,13 +16,13 @@ public class BookingDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private Instant bookingDate;
+    private LocalDate bookingDate;
 
     @NotNull
-    private Instant startDate;
+    private LocalDate startDate;
 
     @NotNull
-    private Instant endDate;
+    private LocalDate endDate;
 
     @NotNull
     private BookingStatus status;
@@ -30,10 +30,6 @@ public class BookingDTO implements Serializable {
     @NotNull
     @DecimalMin(value = "0")
     private BigDecimal totalPrice;
-
-    private RoomDTO room;
-
-    private TourPackageDTO tourPackage;
 
     private CustomerDTO customer;
 
@@ -45,27 +41,27 @@ public class BookingDTO implements Serializable {
         this.id = id;
     }
 
-    public Instant getBookingDate() {
+    public LocalDate getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(Instant bookingDate) {
+    public void setBookingDate(LocalDate bookingDate) {
         this.bookingDate = bookingDate;
     }
 
-    public Instant getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Instant getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -83,22 +79,6 @@ public class BookingDTO implements Serializable {
 
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public RoomDTO getRoom() {
-        return room;
-    }
-
-    public void setRoom(RoomDTO room) {
-        this.room = room;
-    }
-
-    public TourPackageDTO getTourPackage() {
-        return tourPackage;
-    }
-
-    public void setTourPackage(TourPackageDTO tourPackage) {
-        this.tourPackage = tourPackage;
     }
 
     public CustomerDTO getCustomer() {
@@ -140,8 +120,6 @@ public class BookingDTO implements Serializable {
             ", endDate='" + getEndDate() + "'" +
             ", status='" + getStatus() + "'" +
             ", totalPrice=" + getTotalPrice() +
-            ", room=" + getRoom() +
-            ", tourPackage=" + getTourPackage() +
             ", customer=" + getCustomer() +
             "}";
     }

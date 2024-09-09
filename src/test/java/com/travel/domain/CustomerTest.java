@@ -2,6 +2,7 @@ package com.travel.domain;
 
 import static com.travel.domain.BookingTestSamples.*;
 import static com.travel.domain.CustomerTestSamples.*;
+import static com.travel.domain.LoyaltyTransactionTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.travel.web.rest.TestUtil;
@@ -45,5 +46,27 @@ class CustomerTest {
         customer.setBookings(new HashSet<>());
         assertThat(customer.getBookings()).doesNotContain(bookingBack);
         assertThat(bookingBack.getCustomer()).isNull();
+    }
+
+    @Test
+    void loyaltyTransactionTest() {
+        Customer customer = getCustomerRandomSampleGenerator();
+        LoyaltyTransaction loyaltyTransactionBack = getLoyaltyTransactionRandomSampleGenerator();
+
+        customer.addLoyaltyTransaction(loyaltyTransactionBack);
+        assertThat(customer.getLoyaltyTransactions()).containsOnly(loyaltyTransactionBack);
+        assertThat(loyaltyTransactionBack.getCustomer()).isEqualTo(customer);
+
+        customer.removeLoyaltyTransaction(loyaltyTransactionBack);
+        assertThat(customer.getLoyaltyTransactions()).doesNotContain(loyaltyTransactionBack);
+        assertThat(loyaltyTransactionBack.getCustomer()).isNull();
+
+        customer.loyaltyTransactions(new HashSet<>(Set.of(loyaltyTransactionBack)));
+        assertThat(customer.getLoyaltyTransactions()).containsOnly(loyaltyTransactionBack);
+        assertThat(loyaltyTransactionBack.getCustomer()).isEqualTo(customer);
+
+        customer.setLoyaltyTransactions(new HashSet<>());
+        assertThat(customer.getLoyaltyTransactions()).doesNotContain(loyaltyTransactionBack);
+        assertThat(loyaltyTransactionBack.getCustomer()).isNull();
     }
 }

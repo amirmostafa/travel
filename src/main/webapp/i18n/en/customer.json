@@ -23,7 +23,9 @@
       "email": "Email",
       "phoneNumber": "Phone Number",
       "address": "Address",
-      "booking": "Booking"
+      "loyaltyPoints": "Loyalty Points",
+      "booking": "Booking",
+      "loyaltyTransaction": "Loyalty Transaction"
     }
   }
 }

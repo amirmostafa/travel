@@ -12,11 +12,29 @@ public class HotelTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Hotel getHotelSample1() {
-        return new Hotel().id(1L).name("name1").address("address1").starRating(1).contactNumber("contactNumber1").email("email1");
+        return new Hotel()
+            .id(1L)
+            .name("name1")
+            .address("address1")
+            .starRating(1)
+            .contactNumber("contactNumber1")
+            .email("email1")
+            .countryCode("countryCode1")
+            .cityCode("cityCode1")
+            .imageUrl("imageUrl1");
     }
 
     public static Hotel getHotelSample2() {
-        return new Hotel().id(2L).name("name2").address("address2").starRating(2).contactNumber("contactNumber2").email("email2");
+        return new Hotel()
+            .id(2L)
+            .name("name2")
+            .address("address2")
+            .starRating(2)
+            .contactNumber("contactNumber2")
+            .email("email2")
+            .countryCode("countryCode2")
+            .cityCode("cityCode2")
+            .imageUrl("imageUrl2");
     }
 
     public static Hotel getHotelRandomSampleGenerator() {
@@ -26,6 +44,9 @@ public class HotelTestSamples {
             .address(UUID.randomUUID().toString())
             .starRating(intCount.incrementAndGet())
             .contactNumber(UUID.randomUUID().toString())
-            .email(UUID.randomUUID().toString());
+            .email(UUID.randomUUID().toString())
+            .countryCode(UUID.randomUUID().toString())
+            .cityCode(UUID.randomUUID().toString())
+            .imageUrl(UUID.randomUUID().toString());
     }
 }

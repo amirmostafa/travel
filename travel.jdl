@@ -1,97 +1,163 @@
 application {
-  config {
-    baseName travel
-    applicationType monolith
-    packageName com.travel
-    authenticationType jwt
-    prodDatabaseType mysql
-    devDatabaseType mysql
-    buildTool maven
-    clientFramework angular
-    enableTranslation true
-    languages [en]
-  }
-  entities *
+    config {
+        baseName travel
+        applicationType monolith
+        packageName com.travel
+        authenticationType jwt
+        prodDatabaseType mysql
+        devDatabaseType mysql
+        buildTool maven
+        clientFramework angular
+        enableTranslation true
+        languages [en]
+    }
+    entities *
 }
 
 entity Agency {
-  name String required
-  address String required
-  contactNumber String required
-  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
-  website String
+    name String required
+    address String required
+    contactNumber String required
+    email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    website String
 }
 
 entity TourPackage {
-  name String required
-  description String required
-  price BigDecimal required min(0)
-  durationDays Integer required min(1)
-  available Boolean required
+    name String required
+    description String required
+    price BigDecimal required min(0)
+    durationDays Integer required min(1)
+    available Boolean required
 }
 
 entity Customer {
-  firstName String required
-  lastName String required
-  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
-  phoneNumber String required
-  address String
+    firstName String required
+    lastName String required
+    email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    phoneNumber String required
+    address String
+    loyaltyPoints Integer required min(0)
 }
 
 entity Booking {
-  bookingDate Instant required
-  startDate Instant required
-  endDate Instant required
-  status BookingStatus required
-  totalPrice BigDecimal required min(0)
+    bookingDate LocalDate required
+    startDate LocalDate required
+    endDate LocalDate required
+    status BookingStatus required
+    totalPrice BigDecimal required min(0)
 }
 
 entity Hotel {
-  name String required
-  address String required
-  starRating Integer required min(1) max(5)
-  contactNumber String required
-  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    name String required
+    address String required
+    starRating Integer required min(1) max(5)
+    contactNumber String required
+    email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    countryCode String required
+    cityCode String required
+    imageUrl String
 }
 
 entity Room {
-  roomNumber String required
-  type RoomType required
-  description TextBlob
-  discountPercentage Double min(0) max(100)
+    roomNumber String required
+    type RoomType required
+    description String maxlength(50000)
+    discountPercentage Double min(0) max(100)
 }
 
 entity RoomPrice {
-  price BigDecimal required min(0)
-  fromDate Instant required
-  toDate Instant required
+    price BigDecimal required min(0)
+    fromDate LocalDate required
+    toDate LocalDate required
+}
+
+entity Currency {
+    code String required unique
+    name String required
+    symbol String
+    exchangeRate BigDecimal required min(0)
+    isDefault Boolean required // New column to mark default currency
+}
+
+entity Testimonial {
+    authorName String required
+    content String maxlength(50000) required
+    rating Integer min(1) max(5)
+    date LocalDate required
+}
+
+entity AboutUs {
+    description String maxlength(50000) required
+    contactDetails String
+    additionalInfo String maxlength(50000)
+}
+
+entity AgencyService {
+    title String required
+    icon String
+    content String maxlength(50000) required
+}
+
+entity Payment {
+    amount BigDecimal required min(0)
+    paymentMethod PaymentMethod required
+    paymentDate LocalDate required
+    status PaymentStatus required
+}
+
+entity LoyaltyProgram {
+    name String required
+    description String
+    pointsPerDollar Integer required min(0)
+    rewardThreshold Integer required min(0)
+}
+
+entity LoyaltyTransaction {
+    date LocalDate required
+    points Integer required
+    transactionType TransactionType required
+    description String
+}
+
+entity Image {
+    url String required // URL or path to the image
+    description String // Optional description of the image
 }
 
 enum BookingStatus {
-  PENDING, CONFIRMED, CANCELLED
+    PENDING, CONFIRMED, CANCELLED
 }
 
 enum RoomType {
-  SINGLE, DOUBLE, SUITE, FAMILY
+    SINGLE, DOUBLE, SUITE, FAMILY
+}
+
+enum PaymentMethod {
+    CREDIT_CARD, DEBIT_CARD, PAYPAL, BANK_TRANSFER
+}
+
+enum PaymentStatus {
+    PENDING, COMPLETED, FAILED
+}
+
+enum TransactionType {
+    EARNED, REDEEMED
 }
 
 relationship OneToMany {
-  Agency{tourPackage} to TourPackage{agency}
-  Customer{booking} to Booking{customer}
-  Hotel{room} to Room{hotel}
-  Room{roomPrice} to RoomPrice{room}
+    Customer{booking} to Booking{customer}
+    Hotel{room} to Room{hotel}
+    Room{roomPrice} to RoomPrice{room}
+    Testimonial{hotel} to Hotel
+    Booking{payment} to Payment{booking}
+    Customer{loyaltyTransaction} to LoyaltyTransaction{customer}
+    Room{images} to Image{room} // Added relationship to manage multiple images
 }
 
-relationship ManyToOne {
-  Booking{room} to Room
-  Booking{tourPackage} to TourPackage
-}
-
-paginate TourPackage with pagination
-paginate Customer, Booking, Hotel, Room, RoomPrice with infinite-scroll
+paginate all with infinite-scroll
 
 service all with serviceClass
 
 dto all with mapstruct
 
-search TourPackage, Customer, Hotel, Room, RoomPrice, Booking with elasticsearch
+filter all

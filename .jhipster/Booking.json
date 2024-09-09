@@ -7,17 +7,17 @@
   "fields": [
     {
       "fieldName": "bookingDate",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "startDate",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "endDate",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     },
     {
@@ -33,20 +33,16 @@
       "fieldValidateRulesMin": "0"
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Booking",
   "pagination": "infinite-scroll",
   "relationships": [
     {
-      "otherEntityName": "room",
-      "relationshipName": "room",
+      "otherEntityName": "payment",
+      "otherEntityRelationshipName": "booking",
+      "relationshipName": "payment",
       "relationshipSide": "left",
-      "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "tourPackage",
-      "relationshipName": "tourPackage",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
+      "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "customer",

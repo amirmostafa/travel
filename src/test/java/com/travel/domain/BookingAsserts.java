@@ -70,8 +70,6 @@ public class BookingAsserts {
     public static void assertBookingUpdatableRelationshipsEquals(Booking expected, Booking actual) {
         assertThat(expected)
             .as("Verify Booking relationships")
-            .satisfies(e -> assertThat(e.getRoom()).as("check room").isEqualTo(actual.getRoom()))
-            .satisfies(e -> assertThat(e.getTourPackage()).as("check tourPackage").isEqualTo(actual.getTourPackage()))
             .satisfies(e -> assertThat(e.getCustomer()).as("check customer").isEqualTo(actual.getCustomer()));
     }
 }

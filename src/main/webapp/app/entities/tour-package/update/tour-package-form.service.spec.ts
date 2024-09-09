@@ -25,7 +25,6 @@ describe('TourPackage Form Service', () => {
             price: expect.any(Object),
             durationDays: expect.any(Object),
             available: expect.any(Object),
-            agency: expect.any(Object),
           }),
         );
       });
@@ -41,7 +40,6 @@ describe('TourPackage Form Service', () => {
             price: expect.any(Object),
             durationDays: expect.any(Object),
             available: expect.any(Object),
-            agency: expect.any(Object),
           }),
         );
       });

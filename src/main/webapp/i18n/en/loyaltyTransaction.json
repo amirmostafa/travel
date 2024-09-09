@@ -1,0 +1,28 @@
+{
+  "travelApp": {
+    "loyaltyTransaction": {
+      "home": {
+        "title": "Loyalty Transactions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Loyalty Transaction",
+        "createOrEditLabel": "Create or edit a Loyalty Transaction",
+        "notFound": "No Loyalty Transactions found"
+      },
+      "created": "A new Loyalty Transaction is created with identifier {{ param }}",
+      "updated": "A Loyalty Transaction is updated with identifier {{ param }}",
+      "deleted": "A Loyalty Transaction is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Loyalty Transaction {{ id }}?"
+      },
+      "detail": {
+        "title": "Loyalty Transaction"
+      },
+      "id": "ID",
+      "date": "Date",
+      "points": "Points",
+      "transactionType": "Transaction Type",
+      "description": "Description",
+      "customer": "Customer"
+    }
+  }
+}

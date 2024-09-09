@@ -23,7 +23,6 @@ type TourPackageFormGroupContent = {
   price: FormControl<ITourPackage['price']>;
   durationDays: FormControl<ITourPackage['durationDays']>;
   available: FormControl<ITourPackage['available']>;
-  agency: FormControl<ITourPackage['agency']>;
 };
 
 export type TourPackageFormGroup = FormGroup<TourPackageFormGroupContent>;
@@ -58,7 +57,6 @@ export class TourPackageFormService {
       available: new FormControl(tourPackageRawValue.available, {
         validators: [Validators.required],
       }),
-      agency: new FormControl(tourPackageRawValue.agency),
     });
   }
 

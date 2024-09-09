@@ -4,10 +4,7 @@ import com.travel.domain.Agency;
 import com.travel.repository.AgencyRepository;
 import com.travel.service.dto.AgencyDTO;
 import com.travel.service.mapper.AgencyMapper;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -75,17 +72,6 @@ public class AgencyService {
             })
             .map(agencyRepository::save)
             .map(agencyMapper::toDto);
-    }
-
-    /**
-     * Get all the agencies.
-     *
-     * @return the list of entities.
-     */
-    @Transactional(readOnly = true)
-    public List<AgencyDTO> findAll() {
-        log.debug("Request to get all Agencies");
-        return agencyRepository.findAll().stream().map(agencyMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

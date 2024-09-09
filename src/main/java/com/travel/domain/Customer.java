@@ -45,10 +45,20 @@ public class Customer implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @NotNull
+    @Min(value = 0)
+    @Column(name = "loyalty_points", nullable = false)
+    private Integer loyaltyPoints;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "room", "tourPackage", "customer" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "payments", "customer" }, allowSetters = true)
     private Set<Booking> bookings = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "customer" }, allowSetters = true)
+    private Set<LoyaltyTransaction> loyaltyTransactions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -130,6 +140,19 @@ public class Customer implements Serializable {
         this.address = address;
     }
 
+    public Integer getLoyaltyPoints() {
+        return this.loyaltyPoints;
+    }
+
+    public Customer loyaltyPoints(Integer loyaltyPoints) {
+        this.setLoyaltyPoints(loyaltyPoints);
+        return this;
+    }
+
+    public void setLoyaltyPoints(Integer loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
     public Set<Booking> getBookings() {
         return this.bookings;
     }
@@ -158,6 +181,37 @@ public class Customer implements Serializable {
     public Customer removeBooking(Booking booking) {
         this.bookings.remove(booking);
         booking.setCustomer(null);
+        return this;
+    }
+
+    public Set<LoyaltyTransaction> getLoyaltyTransactions() {
+        return this.loyaltyTransactions;
+    }
+
+    public void setLoyaltyTransactions(Set<LoyaltyTransaction> loyaltyTransactions) {
+        if (this.loyaltyTransactions != null) {
+            this.loyaltyTransactions.forEach(i -> i.setCustomer(null));
+        }
+        if (loyaltyTransactions != null) {
+            loyaltyTransactions.forEach(i -> i.setCustomer(this));
+        }
+        this.loyaltyTransactions = loyaltyTransactions;
+    }
+
+    public Customer loyaltyTransactions(Set<LoyaltyTransaction> loyaltyTransactions) {
+        this.setLoyaltyTransactions(loyaltyTransactions);
+        return this;
+    }
+
+    public Customer addLoyaltyTransaction(LoyaltyTransaction loyaltyTransaction) {
+        this.loyaltyTransactions.add(loyaltyTransaction);
+        loyaltyTransaction.setCustomer(this);
+        return this;
+    }
+
+    public Customer removeLoyaltyTransaction(LoyaltyTransaction loyaltyTransaction) {
+        this.loyaltyTransactions.remove(loyaltyTransaction);
+        loyaltyTransaction.setCustomer(null);
         return this;
     }
 
@@ -190,6 +244,7 @@ public class Customer implements Serializable {
             ", email='" + getEmail() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
             ", address='" + getAddress() + "'" +
+            ", loyaltyPoints=" + getLoyaltyPoints() +
             "}";
     }
 }

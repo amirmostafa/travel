@@ -23,8 +23,7 @@
       "endDate": "End Date",
       "status": "Status",
       "totalPrice": "Total Price",
-      "room": "Room",
-      "tourPackage": "Tour Package",
+      "payment": "Payment",
       "customer": "Customer"
     }
   }

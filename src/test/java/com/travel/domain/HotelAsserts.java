@@ -51,7 +51,10 @@ public class HotelAsserts {
             .satisfies(e -> assertThat(e.getAddress()).as("check address").isEqualTo(actual.getAddress()))
             .satisfies(e -> assertThat(e.getStarRating()).as("check starRating").isEqualTo(actual.getStarRating()))
             .satisfies(e -> assertThat(e.getContactNumber()).as("check contactNumber").isEqualTo(actual.getContactNumber()))
-            .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()));
+            .satisfies(e -> assertThat(e.getEmail()).as("check email").isEqualTo(actual.getEmail()))
+            .satisfies(e -> assertThat(e.getCountryCode()).as("check countryCode").isEqualTo(actual.getCountryCode()))
+            .satisfies(e -> assertThat(e.getCityCode()).as("check cityCode").isEqualTo(actual.getCityCode()))
+            .satisfies(e -> assertThat(e.getImageUrl()).as("check imageUrl").isEqualTo(actual.getImageUrl()));
     }
 
     /**
@@ -60,5 +63,9 @@ public class HotelAsserts {
      * @param expected the expected entity
      * @param actual the actual entity
      */
-    public static void assertHotelUpdatableRelationshipsEquals(Hotel expected, Hotel actual) {}
+    public static void assertHotelUpdatableRelationshipsEquals(Hotel expected, Hotel actual) {
+        assertThat(expected)
+            .as("Verify Hotel relationships")
+            .satisfies(e -> assertThat(e.getTestimonial()).as("check testimonial").isEqualTo(actual.getTestimonial()));
+    }
 }

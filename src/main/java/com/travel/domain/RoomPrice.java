@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,14 +32,14 @@ public class RoomPrice implements Serializable {
 
     @NotNull
     @Column(name = "from_date", nullable = false)
-    private Instant fromDate;
+    private LocalDate fromDate;
 
     @NotNull
     @Column(name = "to_date", nullable = false)
-    private Instant toDate;
+    private LocalDate toDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "roomPrices", "hotel" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "roomPrices", "images", "hotel" }, allowSetters = true)
     private Room room;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -70,29 +70,29 @@ public class RoomPrice implements Serializable {
         this.price = price;
     }
 
-    public Instant getFromDate() {
+    public LocalDate getFromDate() {
         return this.fromDate;
     }
 
-    public RoomPrice fromDate(Instant fromDate) {
+    public RoomPrice fromDate(LocalDate fromDate) {
         this.setFromDate(fromDate);
         return this;
     }
 
-    public void setFromDate(Instant fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Instant getToDate() {
+    public LocalDate getToDate() {
         return this.toDate;
     }
 
-    public RoomPrice toDate(Instant toDate) {
+    public RoomPrice toDate(LocalDate toDate) {
         this.setToDate(toDate);
         return this;
     }
 
-    public void setToDate(Instant toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 

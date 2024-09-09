@@ -41,6 +41,46 @@ const routes: Routes = [
     data: { pageTitle: 'travelApp.roomPrice.home.title' },
     loadChildren: () => import('./room-price/room-price.routes'),
   },
+  {
+    path: 'currency',
+    data: { pageTitle: 'travelApp.currency.home.title' },
+    loadChildren: () => import('./currency/currency.routes'),
+  },
+  {
+    path: 'testimonial',
+    data: { pageTitle: 'travelApp.testimonial.home.title' },
+    loadChildren: () => import('./testimonial/testimonial.routes'),
+  },
+  {
+    path: 'about-us',
+    data: { pageTitle: 'travelApp.aboutUs.home.title' },
+    loadChildren: () => import('./about-us/about-us.routes'),
+  },
+  {
+    path: 'agency-service',
+    data: { pageTitle: 'travelApp.agencyService.home.title' },
+    loadChildren: () => import('./agency-service/agency-service.routes'),
+  },
+  {
+    path: 'payment',
+    data: { pageTitle: 'travelApp.payment.home.title' },
+    loadChildren: () => import('./payment/payment.routes'),
+  },
+  {
+    path: 'loyalty-program',
+    data: { pageTitle: 'travelApp.loyaltyProgram.home.title' },
+    loadChildren: () => import('./loyalty-program/loyalty-program.routes'),
+  },
+  {
+    path: 'loyalty-transaction',
+    data: { pageTitle: 'travelApp.loyaltyTransaction.home.title' },
+    loadChildren: () => import('./loyalty-transaction/loyalty-transaction.routes'),
+  },
+  {
+    path: 'image',
+    data: { pageTitle: 'travelApp.image.home.title' },
+    loadChildren: () => import('./image/image.routes'),
+  },
   /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
 ];
 

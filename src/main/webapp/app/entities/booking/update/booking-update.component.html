@@ -17,84 +17,74 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_bookingDate" jhiTranslate="travelApp.booking.bookingDate">Booking Date</label>
-          <div class="d-flex">
+          <div class="input-group">
             <input
               id="field_bookingDate"
               data-cy="bookingDate"
-              type="datetime-local"
+              type="text"
               class="form-control"
               name="bookingDate"
+              ngbDatepicker
+              #bookingDateDp="ngbDatepicker"
               formControlName="bookingDate"
-              placeholder="YYYY-MM-DD HH:mm"
             />
+            <button type="button" class="btn btn-secondary" (click)="bookingDateDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
           </div>
           @if (editForm.get('bookingDate')!.invalid && (editForm.get('bookingDate')!.dirty || editForm.get('bookingDate')!.touched)) {
             <div>
               @if (editForm.get('bookingDate')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('bookingDate')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >This field should be a date and time.</small
-              >
             </div>
           }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_startDate" jhiTranslate="travelApp.booking.startDate">Start Date</label>
-          <div class="d-flex">
+          <div class="input-group">
             <input
               id="field_startDate"
               data-cy="startDate"
-              type="datetime-local"
+              type="text"
               class="form-control"
               name="startDate"
+              ngbDatepicker
+              #startDateDp="ngbDatepicker"
               formControlName="startDate"
-              placeholder="YYYY-MM-DD HH:mm"
             />
+            <button type="button" class="btn btn-secondary" (click)="startDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
           </div>
           @if (editForm.get('startDate')!.invalid && (editForm.get('startDate')!.dirty || editForm.get('startDate')!.touched)) {
             <div>
               @if (editForm.get('startDate')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('startDate')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >This field should be a date and time.</small
-              >
             </div>
           }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_endDate" jhiTranslate="travelApp.booking.endDate">End Date</label>
-          <div class="d-flex">
+          <div class="input-group">
             <input
               id="field_endDate"
               data-cy="endDate"
-              type="datetime-local"
+              type="text"
               class="form-control"
               name="endDate"
+              ngbDatepicker
+              #endDateDp="ngbDatepicker"
               formControlName="endDate"
-              placeholder="YYYY-MM-DD HH:mm"
             />
+            <button type="button" class="btn btn-secondary" (click)="endDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
           </div>
           @if (editForm.get('endDate')!.invalid && (editForm.get('endDate')!.dirty || editForm.get('endDate')!.touched)) {
             <div>
               @if (editForm.get('endDate')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('endDate')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >This field should be a date and time.</small
-              >
             </div>
           }
         </div>
@@ -144,33 +134,6 @@
               >
             </div>
           }
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_room" jhiTranslate="travelApp.booking.room">Room</label>
-          <select class="form-control" id="field_room" data-cy="room" name="room" formControlName="room" [compareWith]="compareRoom">
-            <option [ngValue]="null"></option>
-            @for (roomOption of roomsSharedCollection; track $index) {
-              <option [ngValue]="roomOption">{{ roomOption.id }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_tourPackage" jhiTranslate="travelApp.booking.tourPackage">Tour Package</label>
-          <select
-            class="form-control"
-            id="field_tourPackage"
-            data-cy="tourPackage"
-            name="tourPackage"
-            formControlName="tourPackage"
-            [compareWith]="compareTourPackage"
-          >
-            <option [ngValue]="null"></option>
-            @for (tourPackageOption of tourPackagesSharedCollection; track $index) {
-              <option [ngValue]="tourPackageOption">{{ tourPackageOption.id }}</option>
-            }
-          </select>
         </div>
 
         <div class="mb-3">

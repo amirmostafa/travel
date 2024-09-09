@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -28,15 +30,15 @@ public class Booking implements Serializable {
 
     @NotNull
     @Column(name = "booking_date", nullable = false)
-    private Instant bookingDate;
+    private LocalDate bookingDate;
 
     @NotNull
     @Column(name = "start_date", nullable = false)
-    private Instant startDate;
+    private LocalDate startDate;
 
     @NotNull
     @Column(name = "end_date", nullable = false)
-    private Instant endDate;
+    private LocalDate endDate;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -48,16 +50,13 @@ public class Booking implements Serializable {
     @Column(name = "total_price", precision = 21, scale = 2, nullable = false)
     private BigDecimal totalPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "roomPrices", "hotel" }, allowSetters = true)
-    private Room room;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "booking")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "booking" }, allowSetters = true)
+    private Set<Payment> payments = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "agency" }, allowSetters = true)
-    private TourPackage tourPackage;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "bookings" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "bookings", "loyaltyTransactions" }, allowSetters = true)
     private Customer customer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -75,42 +74,42 @@ public class Booking implements Serializable {
         this.id = id;
     }
 
-    public Instant getBookingDate() {
+    public LocalDate getBookingDate() {
         return this.bookingDate;
     }
 
-    public Booking bookingDate(Instant bookingDate) {
+    public Booking bookingDate(LocalDate bookingDate) {
         this.setBookingDate(bookingDate);
         return this;
     }
 
-    public void setBookingDate(Instant bookingDate) {
+    public void setBookingDate(LocalDate bookingDate) {
         this.bookingDate = bookingDate;
     }
 
-    public Instant getStartDate() {
+    public LocalDate getStartDate() {
         return this.startDate;
     }
 
-    public Booking startDate(Instant startDate) {
+    public Booking startDate(LocalDate startDate) {
         this.setStartDate(startDate);
         return this;
     }
 
-    public void setStartDate(Instant startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Instant getEndDate() {
+    public LocalDate getEndDate() {
         return this.endDate;
     }
 
-    public Booking endDate(Instant endDate) {
+    public Booking endDate(LocalDate endDate) {
         this.setEndDate(endDate);
         return this;
     }
 
-    public void setEndDate(Instant endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -140,29 +139,34 @@ public class Booking implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public Room getRoom() {
-        return this.room;
+    public Set<Payment> getPayments() {
+        return this.payments;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setPayments(Set<Payment> payments) {
+        if (this.payments != null) {
+            this.payments.forEach(i -> i.setBooking(null));
+        }
+        if (payments != null) {
+            payments.forEach(i -> i.setBooking(this));
+        }
+        this.payments = payments;
     }
 
-    public Booking room(Room room) {
-        this.setRoom(room);
+    public Booking payments(Set<Payment> payments) {
+        this.setPayments(payments);
         return this;
     }
 
-    public TourPackage getTourPackage() {
-        return this.tourPackage;
+    public Booking addPayment(Payment payment) {
+        this.payments.add(payment);
+        payment.setBooking(this);
+        return this;
     }
 
-    public void setTourPackage(TourPackage tourPackage) {
-        this.tourPackage = tourPackage;
-    }
-
-    public Booking tourPackage(TourPackage tourPackage) {
-        this.setTourPackage(tourPackage);
+    public Booking removePayment(Payment payment) {
+        this.payments.remove(payment);
+        payment.setBooking(null);
         return this;
     }
 

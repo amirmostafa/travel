@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "changelogDate": "20240908171539"
+  },
+  "applications": ["travel"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "required"],
+      "fieldValidateRulesMaxlength": "65535"
+    },
+    {
+      "fieldName": "contactDetails",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "additionalInfo",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "65535"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "AboutUs",
+  "pagination": "infinite-scroll",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

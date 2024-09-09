@@ -1,7 +1,9 @@
 package com.travel.web.rest;
 
 import com.travel.repository.BookingRepository;
+import com.travel.service.BookingQueryService;
 import com.travel.service.BookingService;
+import com.travel.service.criteria.BookingCriteria;
 import com.travel.service.dto.BookingDTO;
 import com.travel.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,12 @@ public class BookingResource {
 
     private final BookingRepository bookingRepository;
 
-    public BookingResource(BookingService bookingService, BookingRepository bookingRepository) {
+    private final BookingQueryService bookingQueryService;
+
+    public BookingResource(BookingService bookingService, BookingRepository bookingRepository, BookingQueryService bookingQueryService) {
         this.bookingService = bookingService;
         this.bookingRepository = bookingRepository;
+        this.bookingQueryService = bookingQueryService;
     }
 
     /**
@@ -139,14 +144,31 @@ public class BookingResource {
      * {@code GET  /bookings} : get all the bookings.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of bookings in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<BookingDTO>> getAllBookings(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Bookings");
-        Page<BookingDTO> page = bookingService.findAll(pageable);
+    public ResponseEntity<List<BookingDTO>> getAllBookings(
+        BookingCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Bookings by criteria: {}", criteria);
+
+        Page<BookingDTO> page = bookingQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /bookings/count} : count all the bookings.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countBookings(BookingCriteria criteria) {
+        log.debug("REST request to count Bookings by criteria: {}", criteria);
+        return ResponseEntity.ok().body(bookingQueryService.countByCriteria(criteria));
     }
 
     /**

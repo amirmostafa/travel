@@ -32,8 +32,23 @@
       "fieldType": "String",
       "fieldValidateRules": ["required", "pattern"],
       "fieldValidateRulesPattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+    },
+    {
+      "fieldName": "countryCode",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "cityCode",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "imageUrl",
+      "fieldType": "String"
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Hotel",
   "pagination": "infinite-scroll",
   "relationships": [

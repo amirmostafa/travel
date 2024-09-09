@@ -10,14 +10,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.IntegrationTest;
+import com.travel.domain.Room;
 import com.travel.domain.RoomPrice;
 import com.travel.repository.RoomPriceRepository;
 import com.travel.service.dto.RoomPriceDTO;
 import com.travel.service.mapper.RoomPriceMapper;
 import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -40,12 +41,15 @@ class RoomPriceResourceIT {
 
     private static final BigDecimal DEFAULT_PRICE = new BigDecimal(0);
     private static final BigDecimal UPDATED_PRICE = new BigDecimal(1);
+    private static final BigDecimal SMALLER_PRICE = new BigDecimal(0 - 1);
 
-    private static final Instant DEFAULT_FROM_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_FROM_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_FROM_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_FROM_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_FROM_DATE = LocalDate.ofEpochDay(-1L);
 
-    private static final Instant DEFAULT_TO_DATE = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_TO_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDate DEFAULT_TO_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_TO_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_TO_DATE = LocalDate.ofEpochDay(-1L);
 
     private static final String ENTITY_API_URL = "/api/room-prices";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -232,6 +236,298 @@ class RoomPriceResourceIT {
             .andExpect(jsonPath("$.price").value(sameNumber(DEFAULT_PRICE)))
             .andExpect(jsonPath("$.fromDate").value(DEFAULT_FROM_DATE.toString()))
             .andExpect(jsonPath("$.toDate").value(DEFAULT_TO_DATE.toString()));
+    }
+
+    @Test
+    @Transactional
+    void getRoomPricesByIdFiltering() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        Long id = roomPrice.getId();
+
+        defaultRoomPriceFiltering("id.equals=" + id, "id.notEquals=" + id);
+
+        defaultRoomPriceFiltering("id.greaterThanOrEqual=" + id, "id.greaterThan=" + id);
+
+        defaultRoomPriceFiltering("id.lessThanOrEqual=" + id, "id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByPriceIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where price equals to
+        defaultRoomPriceFiltering("price.equals=" + DEFAULT_PRICE, "price.equals=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByPriceIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where price in
+        defaultRoomPriceFiltering("price.in=" + DEFAULT_PRICE + "," + UPDATED_PRICE, "price.in=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByPriceIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where price is not null
+        defaultRoomPriceFiltering("price.specified=true", "price.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByPriceIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where price is greater than or equal to
+        defaultRoomPriceFiltering("price.greaterThanOrEqual=" + DEFAULT_PRICE, "price.greaterThanOrEqual=" + UPDATED_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByPriceIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where price is less than or equal to
+        defaultRoomPriceFiltering("price.lessThanOrEqual=" + DEFAULT_PRICE, "price.lessThanOrEqual=" + SMALLER_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByPriceIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where price is less than
+        defaultRoomPriceFiltering("price.lessThan=" + UPDATED_PRICE, "price.lessThan=" + DEFAULT_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByPriceIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where price is greater than
+        defaultRoomPriceFiltering("price.greaterThan=" + SMALLER_PRICE, "price.greaterThan=" + DEFAULT_PRICE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByFromDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where fromDate equals to
+        defaultRoomPriceFiltering("fromDate.equals=" + DEFAULT_FROM_DATE, "fromDate.equals=" + UPDATED_FROM_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByFromDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where fromDate in
+        defaultRoomPriceFiltering("fromDate.in=" + DEFAULT_FROM_DATE + "," + UPDATED_FROM_DATE, "fromDate.in=" + UPDATED_FROM_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByFromDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where fromDate is not null
+        defaultRoomPriceFiltering("fromDate.specified=true", "fromDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByFromDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where fromDate is greater than or equal to
+        defaultRoomPriceFiltering("fromDate.greaterThanOrEqual=" + DEFAULT_FROM_DATE, "fromDate.greaterThanOrEqual=" + UPDATED_FROM_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByFromDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where fromDate is less than or equal to
+        defaultRoomPriceFiltering("fromDate.lessThanOrEqual=" + DEFAULT_FROM_DATE, "fromDate.lessThanOrEqual=" + SMALLER_FROM_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByFromDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where fromDate is less than
+        defaultRoomPriceFiltering("fromDate.lessThan=" + UPDATED_FROM_DATE, "fromDate.lessThan=" + DEFAULT_FROM_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByFromDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where fromDate is greater than
+        defaultRoomPriceFiltering("fromDate.greaterThan=" + SMALLER_FROM_DATE, "fromDate.greaterThan=" + DEFAULT_FROM_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByToDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where toDate equals to
+        defaultRoomPriceFiltering("toDate.equals=" + DEFAULT_TO_DATE, "toDate.equals=" + UPDATED_TO_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByToDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where toDate in
+        defaultRoomPriceFiltering("toDate.in=" + DEFAULT_TO_DATE + "," + UPDATED_TO_DATE, "toDate.in=" + UPDATED_TO_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByToDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where toDate is not null
+        defaultRoomPriceFiltering("toDate.specified=true", "toDate.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByToDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where toDate is greater than or equal to
+        defaultRoomPriceFiltering("toDate.greaterThanOrEqual=" + DEFAULT_TO_DATE, "toDate.greaterThanOrEqual=" + UPDATED_TO_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByToDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where toDate is less than or equal to
+        defaultRoomPriceFiltering("toDate.lessThanOrEqual=" + DEFAULT_TO_DATE, "toDate.lessThanOrEqual=" + SMALLER_TO_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByToDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where toDate is less than
+        defaultRoomPriceFiltering("toDate.lessThan=" + UPDATED_TO_DATE, "toDate.lessThan=" + DEFAULT_TO_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByToDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoomPrice = roomPriceRepository.saveAndFlush(roomPrice);
+
+        // Get all the roomPriceList where toDate is greater than
+        defaultRoomPriceFiltering("toDate.greaterThan=" + SMALLER_TO_DATE, "toDate.greaterThan=" + DEFAULT_TO_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomPricesByRoomIsEqualToSomething() throws Exception {
+        Room room;
+        if (TestUtil.findAll(em, Room.class).isEmpty()) {
+            roomPriceRepository.saveAndFlush(roomPrice);
+            room = RoomResourceIT.createEntity(em);
+        } else {
+            room = TestUtil.findAll(em, Room.class).get(0);
+        }
+        em.persist(room);
+        em.flush();
+        roomPrice.setRoom(room);
+        roomPriceRepository.saveAndFlush(roomPrice);
+        Long roomId = room.getId();
+        // Get all the roomPriceList where room equals to roomId
+        defaultRoomPriceShouldBeFound("roomId.equals=" + roomId);
+
+        // Get all the roomPriceList where room equals to (roomId + 1)
+        defaultRoomPriceShouldNotBeFound("roomId.equals=" + (roomId + 1));
+    }
+
+    private void defaultRoomPriceFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {
+        defaultRoomPriceShouldBeFound(shouldBeFound);
+        defaultRoomPriceShouldNotBeFound(shouldNotBeFound);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultRoomPriceShouldBeFound(String filter) throws Exception {
+        restRoomPriceMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(roomPrice.getId().intValue())))
+            .andExpect(jsonPath("$.[*].price").value(hasItem(sameNumber(DEFAULT_PRICE))))
+            .andExpect(jsonPath("$.[*].fromDate").value(hasItem(DEFAULT_FROM_DATE.toString())))
+            .andExpect(jsonPath("$.[*].toDate").value(hasItem(DEFAULT_TO_DATE.toString())));
+
+        // Check, that the count call also returns 1
+        restRoomPriceMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultRoomPriceShouldNotBeFound(String filter) throws Exception {
+        restRoomPriceMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restRoomPriceMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

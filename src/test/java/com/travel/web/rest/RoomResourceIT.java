@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.travel.IntegrationTest;
+import com.travel.domain.Hotel;
 import com.travel.domain.Room;
 import com.travel.domain.enumeration.RoomType;
 import com.travel.repository.RoomRepository;
@@ -46,6 +47,7 @@ class RoomResourceIT {
 
     private static final Double DEFAULT_DISCOUNT_PERCENTAGE = 0D;
     private static final Double UPDATED_DISCOUNT_PERCENTAGE = 1D;
+    private static final Double SMALLER_DISCOUNT_PERCENTAGE = 0D - 1D;
 
     private static final String ENTITY_API_URL = "/api/rooms";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -205,7 +207,7 @@ class RoomResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(room.getId().intValue())))
             .andExpect(jsonPath("$.[*].roomNumber").value(hasItem(DEFAULT_ROOM_NUMBER)))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].discountPercentage").value(hasItem(DEFAULT_DISCOUNT_PERCENTAGE.doubleValue())));
     }
 
@@ -223,8 +225,309 @@ class RoomResourceIT {
             .andExpect(jsonPath("$.id").value(room.getId().intValue()))
             .andExpect(jsonPath("$.roomNumber").value(DEFAULT_ROOM_NUMBER))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.discountPercentage").value(DEFAULT_DISCOUNT_PERCENTAGE.doubleValue()));
+    }
+
+    @Test
+    @Transactional
+    void getRoomsByIdFiltering() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        Long id = room.getId();
+
+        defaultRoomFiltering("id.equals=" + id, "id.notEquals=" + id);
+
+        defaultRoomFiltering("id.greaterThanOrEqual=" + id, "id.greaterThan=" + id);
+
+        defaultRoomFiltering("id.lessThanOrEqual=" + id, "id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByRoomNumberIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where roomNumber equals to
+        defaultRoomFiltering("roomNumber.equals=" + DEFAULT_ROOM_NUMBER, "roomNumber.equals=" + UPDATED_ROOM_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByRoomNumberIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where roomNumber in
+        defaultRoomFiltering("roomNumber.in=" + DEFAULT_ROOM_NUMBER + "," + UPDATED_ROOM_NUMBER, "roomNumber.in=" + UPDATED_ROOM_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByRoomNumberIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where roomNumber is not null
+        defaultRoomFiltering("roomNumber.specified=true", "roomNumber.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByRoomNumberContainsSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where roomNumber contains
+        defaultRoomFiltering("roomNumber.contains=" + DEFAULT_ROOM_NUMBER, "roomNumber.contains=" + UPDATED_ROOM_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByRoomNumberNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where roomNumber does not contain
+        defaultRoomFiltering("roomNumber.doesNotContain=" + UPDATED_ROOM_NUMBER, "roomNumber.doesNotContain=" + DEFAULT_ROOM_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where type equals to
+        defaultRoomFiltering("type.equals=" + DEFAULT_TYPE, "type.equals=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByTypeIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where type in
+        defaultRoomFiltering("type.in=" + DEFAULT_TYPE + "," + UPDATED_TYPE, "type.in=" + UPDATED_TYPE);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByTypeIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where type is not null
+        defaultRoomFiltering("type.specified=true", "type.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDescriptionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where description equals to
+        defaultRoomFiltering("description.equals=" + DEFAULT_DESCRIPTION, "description.equals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDescriptionIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where description in
+        defaultRoomFiltering("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION, "description.in=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDescriptionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where description is not null
+        defaultRoomFiltering("description.specified=true", "description.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDescriptionContainsSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where description contains
+        defaultRoomFiltering("description.contains=" + DEFAULT_DESCRIPTION, "description.contains=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDescriptionNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where description does not contain
+        defaultRoomFiltering("description.doesNotContain=" + UPDATED_DESCRIPTION, "description.doesNotContain=" + DEFAULT_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDiscountPercentageIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where discountPercentage equals to
+        defaultRoomFiltering(
+            "discountPercentage.equals=" + DEFAULT_DISCOUNT_PERCENTAGE,
+            "discountPercentage.equals=" + UPDATED_DISCOUNT_PERCENTAGE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDiscountPercentageIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where discountPercentage in
+        defaultRoomFiltering(
+            "discountPercentage.in=" + DEFAULT_DISCOUNT_PERCENTAGE + "," + UPDATED_DISCOUNT_PERCENTAGE,
+            "discountPercentage.in=" + UPDATED_DISCOUNT_PERCENTAGE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDiscountPercentageIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where discountPercentage is not null
+        defaultRoomFiltering("discountPercentage.specified=true", "discountPercentage.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDiscountPercentageIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where discountPercentage is greater than or equal to
+        defaultRoomFiltering(
+            "discountPercentage.greaterThanOrEqual=" + DEFAULT_DISCOUNT_PERCENTAGE,
+            "discountPercentage.greaterThanOrEqual=" + (DEFAULT_DISCOUNT_PERCENTAGE + 1)
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDiscountPercentageIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where discountPercentage is less than or equal to
+        defaultRoomFiltering(
+            "discountPercentage.lessThanOrEqual=" + DEFAULT_DISCOUNT_PERCENTAGE,
+            "discountPercentage.lessThanOrEqual=" + SMALLER_DISCOUNT_PERCENTAGE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDiscountPercentageIsLessThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where discountPercentage is less than
+        defaultRoomFiltering(
+            "discountPercentage.lessThan=" + (DEFAULT_DISCOUNT_PERCENTAGE + 1),
+            "discountPercentage.lessThan=" + DEFAULT_DISCOUNT_PERCENTAGE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByDiscountPercentageIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        insertedRoom = roomRepository.saveAndFlush(room);
+
+        // Get all the roomList where discountPercentage is greater than
+        defaultRoomFiltering(
+            "discountPercentage.greaterThan=" + SMALLER_DISCOUNT_PERCENTAGE,
+            "discountPercentage.greaterThan=" + DEFAULT_DISCOUNT_PERCENTAGE
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllRoomsByHotelIsEqualToSomething() throws Exception {
+        Hotel hotel;
+        if (TestUtil.findAll(em, Hotel.class).isEmpty()) {
+            roomRepository.saveAndFlush(room);
+            hotel = HotelResourceIT.createEntity(em);
+        } else {
+            hotel = TestUtil.findAll(em, Hotel.class).get(0);
+        }
+        em.persist(hotel);
+        em.flush();
+        room.setHotel(hotel);
+        roomRepository.saveAndFlush(room);
+        Long hotelId = hotel.getId();
+        // Get all the roomList where hotel equals to hotelId
+        defaultRoomShouldBeFound("hotelId.equals=" + hotelId);
+
+        // Get all the roomList where hotel equals to (hotelId + 1)
+        defaultRoomShouldNotBeFound("hotelId.equals=" + (hotelId + 1));
+    }
+
+    private void defaultRoomFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {
+        defaultRoomShouldBeFound(shouldBeFound);
+        defaultRoomShouldNotBeFound(shouldNotBeFound);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultRoomShouldBeFound(String filter) throws Exception {
+        restRoomMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(room.getId().intValue())))
+            .andExpect(jsonPath("$.[*].roomNumber").value(hasItem(DEFAULT_ROOM_NUMBER)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].discountPercentage").value(hasItem(DEFAULT_DISCOUNT_PERCENTAGE.doubleValue())));
+
+        // Check, that the count call also returns 1
+        restRoomMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultRoomShouldNotBeFound(String filter) throws Exception {
+        restRoomMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restRoomMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

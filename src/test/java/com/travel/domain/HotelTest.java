@@ -2,6 +2,7 @@ package com.travel.domain;
 
 import static com.travel.domain.HotelTestSamples.*;
 import static com.travel.domain.RoomTestSamples.*;
+import static com.travel.domain.TestimonialTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.travel.web.rest.TestUtil;
@@ -45,5 +46,17 @@ class HotelTest {
         hotel.setRooms(new HashSet<>());
         assertThat(hotel.getRooms()).doesNotContain(roomBack);
         assertThat(roomBack.getHotel()).isNull();
+    }
+
+    @Test
+    void testimonialTest() {
+        Hotel hotel = getHotelRandomSampleGenerator();
+        Testimonial testimonialBack = getTestimonialRandomSampleGenerator();
+
+        hotel.setTestimonial(testimonialBack);
+        assertThat(hotel.getTestimonial()).isEqualTo(testimonialBack);
+
+        hotel.testimonial(null);
+        assertThat(hotel.getTestimonial()).isNull();
     }
 }

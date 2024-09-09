@@ -1,38 +1,47 @@
 import { IHotel, NewHotel } from './hotel.model';
 
 export const sampleWithRequiredData: IHotel = {
-  id: 29567,
-  name: 'smoothly madly nor',
-  address: 'conjugate sunbeam vastly',
-  starRating: 5,
-  contactNumber: 'regarding',
-  email: 'R@?>.y."~rj2',
+  id: 25193,
+  name: 'where even',
+  address: 'elm',
+  starRating: 4,
+  contactNumber: 'save',
+  email: 'r@)\\!f.w|2',
+  countryCode: 'CM',
+  cityCode: 'marginalize allay',
 };
 
 export const sampleWithPartialData: IHotel = {
-  id: 9898,
-  name: 'than discolour duh',
-  address: 'yippee lest lyre',
-  starRating: 4,
-  contactNumber: 'excepting unconscious badly',
-  email: '%6I*@tm?MI.szQ',
+  id: 28398,
+  name: 'whose instead cant',
+  address: 'keenly around hat',
+  starRating: 5,
+  contactNumber: 'until round',
+  email: 'mtGf@}0H%[.6',
+  countryCode: 'IQ',
+  cityCode: 'lest',
 };
 
 export const sampleWithFullData: IHotel = {
-  id: 10211,
-  name: 'vicinity',
-  address: 'rapidly',
+  id: 28621,
+  name: 'which gadzooks kindly',
+  address: 'water furthermore',
   starRating: 1,
-  contactNumber: 'administration',
-  email: '|n{4LU@6.T',
+  contactNumber: 'bowl fatally',
+  email: 'XKbZ@aF.rnf`',
+  countryCode: 'AU',
+  cityCode: 'but',
+  imageUrl: 'aha',
 };
 
 export const sampleWithNewData: NewHotel = {
-  name: 'salute opposite grill',
-  address: 'strictly boohoo',
+  name: 'gah',
+  address: 'dimly even',
   starRating: 5,
-  contactNumber: 'indeed modulo',
-  email: '_@xu+1c.f/b)4m',
+  contactNumber: 'duh stagger whoop',
+  email: '*[_U@f2"A.R*O)UI',
+  countryCode: 'CF',
+  cityCode: 'sentimental',
   id: null,
 };
 

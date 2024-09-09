@@ -13,15 +13,16 @@
     },
     {
       "fieldName": "fromDate",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     },
     {
       "fieldName": "toDate",
-      "fieldType": "Instant",
+      "fieldType": "LocalDate",
       "fieldValidateRules": ["required"]
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "RoomPrice",
   "pagination": "infinite-scroll",
   "relationships": [

@@ -35,6 +35,10 @@
           <dd>
             <span>{{ customer()!.address }}</span>
           </dd>
+          <dt><span jhiTranslate="travelApp.customer.loyaltyPoints">Loyalty Points</span></dt>
+          <dd>
+            <span>{{ customer()!.loyaltyPoints }}</span>
+          </dd>
         </dl>
 
         <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

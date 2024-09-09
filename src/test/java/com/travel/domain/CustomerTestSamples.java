@@ -2,12 +2,14 @@ package com.travel.domain;
 
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class CustomerTestSamples {
 
     private static final Random random = new Random();
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
+    private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Customer getCustomerSample1() {
         return new Customer()
@@ -16,7 +18,8 @@ public class CustomerTestSamples {
             .lastName("lastName1")
             .email("email1")
             .phoneNumber("phoneNumber1")
-            .address("address1");
+            .address("address1")
+            .loyaltyPoints(1);
     }
 
     public static Customer getCustomerSample2() {
@@ -26,7 +29,8 @@ public class CustomerTestSamples {
             .lastName("lastName2")
             .email("email2")
             .phoneNumber("phoneNumber2")
-            .address("address2");
+            .address("address2")
+            .loyaltyPoints(2);
     }
 
     public static Customer getCustomerRandomSampleGenerator() {
@@ -36,6 +40,7 @@ public class CustomerTestSamples {
             .lastName(UUID.randomUUID().toString())
             .email(UUID.randomUUID().toString())
             .phoneNumber(UUID.randomUUID().toString())
-            .address(UUID.randomUUID().toString());
+            .address(UUID.randomUUID().toString())
+            .loyaltyPoints(intCount.incrementAndGet());
     }
 }

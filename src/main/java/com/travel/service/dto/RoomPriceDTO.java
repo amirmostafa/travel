@@ -3,7 +3,7 @@ package com.travel.service.dto;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -19,10 +19,10 @@ public class RoomPriceDTO implements Serializable {
     private BigDecimal price;
 
     @NotNull
-    private Instant fromDate;
+    private LocalDate fromDate;
 
     @NotNull
-    private Instant toDate;
+    private LocalDate toDate;
 
     private RoomDTO room;
 
@@ -42,19 +42,19 @@ public class RoomPriceDTO implements Serializable {
         this.price = price;
     }
 
-    public Instant getFromDate() {
+    public LocalDate getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(Instant fromDate) {
+    public void setFromDate(LocalDate fromDate) {
         this.fromDate = fromDate;
     }
 
-    public Instant getToDate() {
+    public LocalDate getToDate() {
         return toDate;
     }
 
-    public void setToDate(Instant toDate) {
+    public void setToDate(LocalDate toDate) {
         this.toDate = toDate;
     }
 

@@ -1,7 +1,9 @@
 package com.travel.web.rest;
 
 import com.travel.repository.TourPackageRepository;
+import com.travel.service.TourPackageQueryService;
 import com.travel.service.TourPackageService;
+import com.travel.service.criteria.TourPackageCriteria;
 import com.travel.service.dto.TourPackageDTO;
 import com.travel.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,16 @@ public class TourPackageResource {
 
     private final TourPackageRepository tourPackageRepository;
 
-    public TourPackageResource(TourPackageService tourPackageService, TourPackageRepository tourPackageRepository) {
+    private final TourPackageQueryService tourPackageQueryService;
+
+    public TourPackageResource(
+        TourPackageService tourPackageService,
+        TourPackageRepository tourPackageRepository,
+        TourPackageQueryService tourPackageQueryService
+    ) {
         this.tourPackageService = tourPackageService;
         this.tourPackageRepository = tourPackageRepository;
+        this.tourPackageQueryService = tourPackageQueryService;
     }
 
     /**
@@ -139,14 +148,31 @@ public class TourPackageResource {
      * {@code GET  /tour-packages} : get all the tourPackages.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tourPackages in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<TourPackageDTO>> getAllTourPackages(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of TourPackages");
-        Page<TourPackageDTO> page = tourPackageService.findAll(pageable);
+    public ResponseEntity<List<TourPackageDTO>> getAllTourPackages(
+        TourPackageCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get TourPackages by criteria: {}", criteria);
+
+        Page<TourPackageDTO> page = tourPackageQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /tour-packages/count} : count all the tourPackages.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countTourPackages(TourPackageCriteria criteria) {
+        log.debug("REST request to count TourPackages by criteria: {}", criteria);
+        return ResponseEntity.ok().body(tourPackageQueryService.countByCriteria(criteria));
     }
 
     /**

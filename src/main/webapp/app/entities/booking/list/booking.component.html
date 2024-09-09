@@ -77,18 +77,6 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="room.id">
-              <div class="d-flex">
-                <span jhiTranslate="travelApp.booking.room">Room</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
-            <th scope="col" jhiSortBy="tourPackage.id">
-              <div class="d-flex">
-                <span jhiTranslate="travelApp.booking.tourPackage">Tour Package</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col" jhiSortBy="customer.id">
               <div class="d-flex">
                 <span jhiTranslate="travelApp.booking.customer">Customer</span>
@@ -104,27 +92,13 @@
               <td>
                 <a [routerLink]="['/booking', booking.id, 'view']">{{ booking.id }}</a>
               </td>
-              <td>{{ booking.bookingDate | formatMediumDatetime }}</td>
-              <td>{{ booking.startDate | formatMediumDatetime }}</td>
-              <td>{{ booking.endDate | formatMediumDatetime }}</td>
+              <td>{{ booking.bookingDate | formatMediumDate }}</td>
+              <td>{{ booking.startDate | formatMediumDate }}</td>
+              <td>{{ booking.endDate | formatMediumDate }}</td>
               <td [jhiTranslate]="'travelApp.BookingStatus.' + (booking.status ?? 'null')">
                 {{ { null: '', PENDING: 'PENDING', CONFIRMED: 'CONFIRMED', CANCELLED: 'CANCELLED' }[booking.status ?? 'null'] }}
               </td>
               <td>{{ booking.totalPrice }}</td>
-              <td>
-                @if (booking.room) {
-                  <div>
-                    <a [routerLink]="['/room', booking.room.id, 'view']">{{ booking.room.id }}</a>
-                  </div>
-                }
-              </td>
-              <td>
-                @if (booking.tourPackage) {
-                  <div>
-                    <a [routerLink]="['/tour-package', booking.tourPackage.id, 'view']">{{ booking.tourPackage.id }}</a>
-                  </div>
-                }
-              </td>
               <td>
                 @if (booking.customer) {
                   <div>

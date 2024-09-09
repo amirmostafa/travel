@@ -51,16 +51,27 @@ public class CacheConfiguration {
             createCache(cm, com.travel.domain.Authority.class.getName());
             createCache(cm, com.travel.domain.User.class.getName() + ".authorities");
             createCache(cm, com.travel.domain.Agency.class.getName());
-            createCache(cm, com.travel.domain.Agency.class.getName() + ".tourPackages");
             createCache(cm, com.travel.domain.TourPackage.class.getName());
             createCache(cm, com.travel.domain.Customer.class.getName());
             createCache(cm, com.travel.domain.Customer.class.getName() + ".bookings");
+            createCache(cm, com.travel.domain.Customer.class.getName() + ".loyaltyTransactions");
             createCache(cm, com.travel.domain.Booking.class.getName());
+            createCache(cm, com.travel.domain.Booking.class.getName() + ".payments");
             createCache(cm, com.travel.domain.Hotel.class.getName());
             createCache(cm, com.travel.domain.Hotel.class.getName() + ".rooms");
             createCache(cm, com.travel.domain.Room.class.getName());
             createCache(cm, com.travel.domain.Room.class.getName() + ".roomPrices");
+            createCache(cm, com.travel.domain.Room.class.getName() + ".images");
             createCache(cm, com.travel.domain.RoomPrice.class.getName());
+            createCache(cm, com.travel.domain.Currency.class.getName());
+            createCache(cm, com.travel.domain.Testimonial.class.getName());
+            createCache(cm, com.travel.domain.Testimonial.class.getName() + ".hotels");
+            createCache(cm, com.travel.domain.AboutUs.class.getName());
+            createCache(cm, com.travel.domain.AgencyService.class.getName());
+            createCache(cm, com.travel.domain.Payment.class.getName());
+            createCache(cm, com.travel.domain.LoyaltyProgram.class.getName());
+            createCache(cm, com.travel.domain.LoyaltyTransaction.class.getName());
+            createCache(cm, com.travel.domain.Image.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -22,8 +22,7 @@
       "address": "Address",
       "contactNumber": "Contact Number",
       "email": "Email",
-      "website": "Website",
-      "tourPackage": "Tour Package"
+      "website": "Website"
     }
   }
 }

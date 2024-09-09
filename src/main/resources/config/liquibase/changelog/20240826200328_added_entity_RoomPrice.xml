@@ -17,10 +17,10 @@
             <column name="price" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
-            <column name="from_date" type="${datetimeType}">
+            <column name="from_date" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="to_date" type="${datetimeType}">
+            <column name="to_date" type="date">
                 <constraints nullable="false" />
             </column>
             <column name="room_id" type="bigint">
@@ -28,8 +28,6 @@
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="room_price" columnName="from_date" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="room_price" columnName="to_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

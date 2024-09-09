@@ -1,7 +1,9 @@
 package com.travel.web.rest;
 
 import com.travel.repository.CustomerRepository;
+import com.travel.service.CustomerQueryService;
 import com.travel.service.CustomerService;
+import com.travel.service.criteria.CustomerCriteria;
 import com.travel.service.dto.CustomerDTO;
 import com.travel.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,16 @@ public class CustomerResource {
 
     private final CustomerRepository customerRepository;
 
-    public CustomerResource(CustomerService customerService, CustomerRepository customerRepository) {
+    private final CustomerQueryService customerQueryService;
+
+    public CustomerResource(
+        CustomerService customerService,
+        CustomerRepository customerRepository,
+        CustomerQueryService customerQueryService
+    ) {
         this.customerService = customerService;
         this.customerRepository = customerRepository;
+        this.customerQueryService = customerQueryService;
     }
 
     /**
@@ -139,14 +148,31 @@ public class CustomerResource {
      * {@code GET  /customers} : get all the customers.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of customers in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<CustomerDTO>> getAllCustomers(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Customers");
-        Page<CustomerDTO> page = customerService.findAll(pageable);
+    public ResponseEntity<List<CustomerDTO>> getAllCustomers(
+        CustomerCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Customers by criteria: {}", criteria);
+
+        Page<CustomerDTO> page = customerQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /customers/count} : count all the customers.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countCustomers(CustomerCriteria criteria) {
+        log.debug("REST request to count Customers by criteria: {}", criteria);
+        return ResponseEntity.ok().body(customerQueryService.countByCriteria(criteria));
     }
 
     /**

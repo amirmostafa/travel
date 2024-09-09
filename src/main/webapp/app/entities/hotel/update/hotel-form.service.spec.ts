@@ -25,6 +25,10 @@ describe('Hotel Form Service', () => {
             starRating: expect.any(Object),
             contactNumber: expect.any(Object),
             email: expect.any(Object),
+            countryCode: expect.any(Object),
+            cityCode: expect.any(Object),
+            imageUrl: expect.any(Object),
+            testimonial: expect.any(Object),
           }),
         );
       });
@@ -40,6 +44,10 @@ describe('Hotel Form Service', () => {
             starRating: expect.any(Object),
             contactNumber: expect.any(Object),
             email: expect.any(Object),
+            countryCode: expect.any(Object),
+            cityCode: expect.any(Object),
+            imageUrl: expect.any(Object),
+            testimonial: expect.any(Object),
           }),
         );
       });

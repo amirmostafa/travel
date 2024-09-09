@@ -48,10 +48,25 @@ public class Hotel implements Serializable {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @NotNull
+    @Column(name = "country_code", nullable = false)
+    private String countryCode;
+
+    @NotNull
+    @Column(name = "city_code", nullable = false)
+    private String cityCode;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "hotel")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "roomPrices", "hotel" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "roomPrices", "images", "hotel" }, allowSetters = true)
     private Set<Room> rooms = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "hotels" }, allowSetters = true)
+    private Testimonial testimonial;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -133,6 +148,45 @@ public class Hotel implements Serializable {
         this.email = email;
     }
 
+    public String getCountryCode() {
+        return this.countryCode;
+    }
+
+    public Hotel countryCode(String countryCode) {
+        this.setCountryCode(countryCode);
+        return this;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getCityCode() {
+        return this.cityCode;
+    }
+
+    public Hotel cityCode(String cityCode) {
+        this.setCityCode(cityCode);
+        return this;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
+
+    public Hotel imageUrl(String imageUrl) {
+        this.setImageUrl(imageUrl);
+        return this;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     public Set<Room> getRooms() {
         return this.rooms;
     }
@@ -161,6 +215,19 @@ public class Hotel implements Serializable {
     public Hotel removeRoom(Room room) {
         this.rooms.remove(room);
         room.setHotel(null);
+        return this;
+    }
+
+    public Testimonial getTestimonial() {
+        return this.testimonial;
+    }
+
+    public void setTestimonial(Testimonial testimonial) {
+        this.testimonial = testimonial;
+    }
+
+    public Hotel testimonial(Testimonial testimonial) {
+        this.setTestimonial(testimonial);
         return this;
     }
 
@@ -193,6 +260,9 @@ public class Hotel implements Serializable {
             ", starRating=" + getStarRating() +
             ", contactNumber='" + getContactNumber() + "'" +
             ", email='" + getEmail() + "'" +
+            ", countryCode='" + getCountryCode() + "'" +
+            ", cityCode='" + getCityCode() + "'" +
+            ", imageUrl='" + getImageUrl() + "'" +
             "}";
     }
 }

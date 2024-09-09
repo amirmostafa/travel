@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (testimonial()) {
+      <div>
+        <h2 data-cy="testimonialDetailsHeading"><span jhiTranslate="travelApp.testimonial.detail.title">Testimonial</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ testimonial()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.testimonial.authorName">Author Name</span></dt>
+          <dd>
+            <span>{{ testimonial()!.authorName }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.testimonial.content">Content</span></dt>
+          <dd>
+            <span>{{ testimonial()!.content }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.testimonial.rating">Rating</span></dt>
+          <dd>
+            <span>{{ testimonial()!.rating }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.testimonial.date">Date</span></dt>
+          <dd>
+            <span>{{ testimonial()!.date | formatMediumDate }}</span>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/testimonial', testimonial()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

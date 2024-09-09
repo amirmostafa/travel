@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (loyaltyTransaction()) {
+      <div>
+        <h2 data-cy="loyaltyTransactionDetailsHeading">
+          <span jhiTranslate="travelApp.loyaltyTransaction.detail.title">Loyalty Transaction</span>
+        </h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ loyaltyTransaction()!.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyTransaction.date">Date</span></dt>
+          <dd>
+            <span>{{ loyaltyTransaction()!.date | formatMediumDate }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyTransaction.points">Points</span></dt>
+          <dd>
+            <span>{{ loyaltyTransaction()!.points }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyTransaction.transactionType">Transaction Type</span></dt>
+          <dd>
+            <span [jhiTranslate]="'travelApp.TransactionType.' + (loyaltyTransaction()!.transactionType ?? 'null')">{{
+              { null: '', EARNED: 'EARNED', REDEEMED: 'REDEEMED' }[loyaltyTransaction()!.transactionType ?? 'null']
+            }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyTransaction.description">Description</span></dt>
+          <dd>
+            <span>{{ loyaltyTransaction()!.description }}</span>
+          </dd>
+          <dt><span jhiTranslate="travelApp.loyaltyTransaction.customer">Customer</span></dt>
+          <dd>
+            @if (loyaltyTransaction()!.customer) {
+              <div>
+                <a [routerLink]="['/customer', loyaltyTransaction()!.customer?.id, 'view']">{{ loyaltyTransaction()!.customer?.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/loyalty-transaction', loyaltyTransaction()!.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

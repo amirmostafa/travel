@@ -30,6 +30,16 @@ public class HotelDTO implements Serializable {
     @Pattern(regexp = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
     private String email;
 
+    @NotNull
+    private String countryCode;
+
+    @NotNull
+    private String cityCode;
+
+    private String imageUrl;
+
+    private TestimonialDTO testimonial;
+
     public Long getId() {
         return id;
     }
@@ -78,6 +88,38 @@ public class HotelDTO implements Serializable {
         this.email = email;
     }
 
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public TestimonialDTO getTestimonial() {
+        return testimonial;
+    }
+
+    public void setTestimonial(TestimonialDTO testimonial) {
+        this.testimonial = testimonial;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -109,6 +151,10 @@ public class HotelDTO implements Serializable {
             ", starRating=" + getStarRating() +
             ", contactNumber='" + getContactNumber() + "'" +
             ", email='" + getEmail() + "'" +
+            ", countryCode='" + getCountryCode() + "'" +
+            ", cityCode='" + getCityCode() + "'" +
+            ", imageUrl='" + getImageUrl() + "'" +
+            ", testimonial=" + getTestimonial() +
             "}";
     }
 }

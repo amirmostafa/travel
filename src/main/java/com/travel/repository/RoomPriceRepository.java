@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface RoomPriceRepository extends JpaRepository<RoomPrice, Long> {}
+public interface RoomPriceRepository extends JpaRepository<RoomPrice, Long>, JpaSpecificationExecutor<RoomPrice> {}

@@ -77,16 +77,10 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
-            <th scope="col" jhiSortBy="agency.id">
-              <div class="d-flex">
-                <span jhiTranslate="travelApp.tourPackage.agency">Agency</span>
-                <fa-icon class="p-1" icon="sort"></fa-icon>
-              </div>
-            </th>
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
           @for (tourPackage of tourPackages; track trackId) {
             <tr data-cy="entityTable">
               <td>
@@ -97,13 +91,6 @@
               <td>{{ tourPackage.price }}</td>
               <td>{{ tourPackage.durationDays }}</td>
               <td>{{ tourPackage.available }}</td>
-              <td>
-                @if (tourPackage.agency) {
-                  <div>
-                    <a [routerLink]="['/agency', tourPackage.agency.id, 'view']">{{ tourPackage.agency.id }}</a>
-                  </div>
-                }
-              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/tour-package', tourPackage.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
@@ -126,25 +113,6 @@
           }
         </tbody>
       </table>
-    </div>
-  }
-  @if (tourPackages && tourPackages.length > 0) {
-    <div>
-      <div class="d-flex justify-content-center">
-        <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
-      </div>
-
-      <div class="d-flex justify-content-center">
-        <ngb-pagination
-          [collectionSize]="totalItems"
-          [page]="page"
-          [pageSize]="itemsPerPage"
-          [maxSize]="5"
-          [rotate]="true"
-          [boundaryLinks]="true"
-          (pageChange)="navigateToPage($event)"
-        ></ngb-pagination>
-      </div>
     </div>
   }
 </div>

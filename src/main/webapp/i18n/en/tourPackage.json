@@ -22,8 +22,7 @@
       "description": "Description",
       "price": "Price",
       "durationDays": "Duration Days",
-      "available": "Available",
-      "agency": "Agency"
+      "available": "Available"
     }
   }
 }

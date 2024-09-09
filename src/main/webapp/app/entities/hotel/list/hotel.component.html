@@ -77,6 +77,33 @@
                 <fa-icon class="p-1" icon="sort"></fa-icon>
               </div>
             </th>
+            <th scope="col" jhiSortBy="countryCode">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.hotel.countryCode">Country Code</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="cityCode">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.hotel.cityCode">City Code</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="imageUrl">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.hotel.imageUrl">Image Url</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="testimonial.id">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.hotel.testimonial">Testimonial</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -91,6 +118,16 @@
               <td>{{ hotel.starRating }}</td>
               <td>{{ hotel.contactNumber }}</td>
               <td>{{ hotel.email }}</td>
+              <td>{{ hotel.countryCode }}</td>
+              <td>{{ hotel.cityCode }}</td>
+              <td>{{ hotel.imageUrl }}</td>
+              <td>
+                @if (hotel.testimonial) {
+                  <div>
+                    <a [routerLink]="['/testimonial', hotel.testimonial.id, 'view']">{{ hotel.testimonial.id }}</a>
+                  </div>
+                }
+              </td>
               <td class="text-end">
                 <div class="btn-group">
                   <a [routerLink]="['/hotel', hotel.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

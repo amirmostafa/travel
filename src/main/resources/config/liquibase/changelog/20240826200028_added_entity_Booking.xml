@@ -14,13 +14,13 @@
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="booking_date" type="${datetimeType}">
+            <column name="booking_date" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="start_date" type="${datetimeType}">
+            <column name="start_date" type="date">
                 <constraints nullable="false" />
             </column>
-            <column name="end_date" type="${datetimeType}">
+            <column name="end_date" type="date">
                 <constraints nullable="false" />
             </column>
             <column name="status" type="varchar(255)">
@@ -29,20 +29,11 @@
             <column name="total_price" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
-            <column name="room_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-            <column name="tour_package_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
             <column name="customer_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
-        <dropDefaultValue tableName="booking" columnName="booking_date" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="booking" columnName="start_date" columnDataType="${datetimeType}"/>
-        <dropDefaultValue tableName="booking" columnName="end_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->

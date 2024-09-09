@@ -23,6 +23,10 @@ type HotelFormGroupContent = {
   starRating: FormControl<IHotel['starRating']>;
   contactNumber: FormControl<IHotel['contactNumber']>;
   email: FormControl<IHotel['email']>;
+  countryCode: FormControl<IHotel['countryCode']>;
+  cityCode: FormControl<IHotel['cityCode']>;
+  imageUrl: FormControl<IHotel['imageUrl']>;
+  testimonial: FormControl<IHotel['testimonial']>;
 };
 
 export type HotelFormGroup = FormGroup<HotelFormGroupContent>;
@@ -57,6 +61,14 @@ export class HotelFormService {
       email: new FormControl(hotelRawValue.email, {
         validators: [Validators.required, Validators.pattern('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')],
       }),
+      countryCode: new FormControl(hotelRawValue.countryCode, {
+        validators: [Validators.required],
+      }),
+      cityCode: new FormControl(hotelRawValue.cityCode, {
+        validators: [Validators.required],
+      }),
+      imageUrl: new FormControl(hotelRawValue.imageUrl),
+      testimonial: new FormControl(hotelRawValue.testimonial),
     });
   }
 

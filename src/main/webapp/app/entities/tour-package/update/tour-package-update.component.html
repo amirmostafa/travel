@@ -111,23 +111,6 @@
             </div>
           }
         </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_agency" jhiTranslate="travelApp.tourPackage.agency">Agency</label>
-          <select
-            class="form-control"
-            id="field_agency"
-            data-cy="agency"
-            name="agency"
-            formControlName="agency"
-            [compareWith]="compareAgency"
-          >
-            <option [ngValue]="null"></option>
-            @for (agencyOption of agenciesSharedCollection; track $index) {
-              <option [ngValue]="agencyOption">{{ agencyOption.id }}</option>
-            }
-          </select>
-        </div>
       </div>
 
       <div>

@@ -7,9 +7,6 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
-import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IHotel } from 'app/entities/hotel/hotel.model';
 import { HotelService } from 'app/entities/hotel/service/hotel.service';
 import { RoomType } from 'app/entities/enumerations/room-type.model';
@@ -30,8 +27,6 @@ export class RoomUpdateComponent implements OnInit {
 
   hotelsSharedCollection: IHotel[] = [];
 
-  protected dataUtils = inject(DataUtils);
-  protected eventManager = inject(EventManager);
   protected roomService = inject(RoomService);
   protected roomFormService = inject(RoomFormService);
   protected hotelService = inject(HotelService);
@@ -50,21 +45,6 @@ export class RoomUpdateComponent implements OnInit {
       }
 
       this.loadRelationshipsOptions();
-    });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(base64String: string, contentType: string | null | undefined): void {
-    this.dataUtils.openFile(base64String, contentType);
-  }
-
-  setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
-      error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('travelApp.error', { ...err, key: 'error.file.' + err.key })),
     });
   }
 

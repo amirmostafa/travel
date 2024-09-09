@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { provideHttpClient } from '@angular/common/http';
 
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { IRoomPrice } from '../room-price.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../room-price.test-samples';
 
@@ -9,8 +10,8 @@ import { RoomPriceService, RestRoomPrice } from './room-price.service';
 
 const requireRestSample: RestRoomPrice = {
   ...sampleWithRequiredData,
-  fromDate: sampleWithRequiredData.fromDate?.toJSON(),
-  toDate: sampleWithRequiredData.toDate?.toJSON(),
+  fromDate: sampleWithRequiredData.fromDate?.format(DATE_FORMAT),
+  toDate: sampleWithRequiredData.toDate?.format(DATE_FORMAT),
 };
 
 describe('RoomPrice Service', () => {

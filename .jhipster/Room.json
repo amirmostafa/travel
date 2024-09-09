@@ -18,8 +18,9 @@
     },
     {
       "fieldName": "description",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "65535"
     },
     {
       "fieldName": "discountPercentage",
@@ -29,6 +30,7 @@
       "fieldValidateRulesMin": "0"
     }
   ],
+  "jpaMetamodelFiltering": true,
   "name": "Room",
   "pagination": "infinite-scroll",
   "relationships": [
@@ -36,6 +38,13 @@
       "otherEntityName": "roomPrice",
       "otherEntityRelationshipName": "room",
       "relationshipName": "roomPrice",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "room",
+      "relationshipName": "images",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
     },

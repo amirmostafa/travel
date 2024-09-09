@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import dayjs from 'dayjs/esm';
-import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { IRoomPrice, NewRoomPrice } from '../room-price.model';
 
 /**
@@ -16,26 +14,14 @@ type PartialWithRequiredKeyOf<T extends { id: unknown }> = Partial<Omit<T, 'id'>
  */
 type RoomPriceFormGroupInput = IRoomPrice | PartialWithRequiredKeyOf<NewRoomPrice>;
 
-/**
- * Type that converts some properties for forms.
- */
-type FormValueOf<T extends IRoomPrice | NewRoomPrice> = Omit<T, 'fromDate' | 'toDate'> & {
-  fromDate?: string | null;
-  toDate?: string | null;
-};
-
-type RoomPriceFormRawValue = FormValueOf<IRoomPrice>;
-
-type NewRoomPriceFormRawValue = FormValueOf<NewRoomPrice>;
-
-type RoomPriceFormDefaults = Pick<NewRoomPrice, 'id' | 'fromDate' | 'toDate'>;
+type RoomPriceFormDefaults = Pick<NewRoomPrice, 'id'>;
 
 type RoomPriceFormGroupContent = {
-  id: FormControl<RoomPriceFormRawValue['id'] | NewRoomPrice['id']>;
-  price: FormControl<RoomPriceFormRawValue['price']>;
-  fromDate: FormControl<RoomPriceFormRawValue['fromDate']>;
-  toDate: FormControl<RoomPriceFormRawValue['toDate']>;
-  room: FormControl<RoomPriceFormRawValue['room']>;
+  id: FormControl<IRoomPrice['id'] | NewRoomPrice['id']>;
+  price: FormControl<IRoomPrice['price']>;
+  fromDate: FormControl<IRoomPrice['fromDate']>;
+  toDate: FormControl<IRoomPrice['toDate']>;
+  room: FormControl<IRoomPrice['room']>;
 };
 
 export type RoomPriceFormGroup = FormGroup<RoomPriceFormGroupContent>;
@@ -43,10 +29,10 @@ export type RoomPriceFormGroup = FormGroup<RoomPriceFormGroupContent>;
 @Injectable({ providedIn: 'root' })
 export class RoomPriceFormService {
   createRoomPriceFormGroup(roomPrice: RoomPriceFormGroupInput = { id: null }): RoomPriceFormGroup {
-    const roomPriceRawValue = this.convertRoomPriceToRoomPriceRawValue({
+    const roomPriceRawValue = {
       ...this.getFormDefaults(),
       ...roomPrice,
-    });
+    };
     return new FormGroup<RoomPriceFormGroupContent>({
       id: new FormControl(
         { value: roomPriceRawValue.id, disabled: true },
@@ -69,11 +55,11 @@ export class RoomPriceFormService {
   }
 
   getRoomPrice(form: RoomPriceFormGroup): IRoomPrice | NewRoomPrice {
-    return this.convertRoomPriceRawValueToRoomPrice(form.getRawValue() as RoomPriceFormRawValue | NewRoomPriceFormRawValue);
+    return form.getRawValue() as IRoomPrice | NewRoomPrice;
   }
 
   resetForm(form: RoomPriceFormGroup, roomPrice: RoomPriceFormGroupInput): void {
-    const roomPriceRawValue = this.convertRoomPriceToRoomPriceRawValue({ ...this.getFormDefaults(), ...roomPrice });
+    const roomPriceRawValue = { ...this.getFormDefaults(), ...roomPrice };
     form.reset(
       {
         ...roomPriceRawValue,
@@ -83,30 +69,8 @@ export class RoomPriceFormService {
   }
 
   private getFormDefaults(): RoomPriceFormDefaults {
-    const currentTime = dayjs();
-
     return {
       id: null,
-      fromDate: currentTime,
-      toDate: currentTime,
-    };
-  }
-
-  private convertRoomPriceRawValueToRoomPrice(rawRoomPrice: RoomPriceFormRawValue | NewRoomPriceFormRawValue): IRoomPrice | NewRoomPrice {
-    return {
-      ...rawRoomPrice,
-      fromDate: dayjs(rawRoomPrice.fromDate, DATE_TIME_FORMAT),
-      toDate: dayjs(rawRoomPrice.toDate, DATE_TIME_FORMAT),
-    };
-  }
-
-  private convertRoomPriceToRoomPriceRawValue(
-    roomPrice: IRoomPrice | (Partial<NewRoomPrice> & RoomPriceFormDefaults),
-  ): RoomPriceFormRawValue | PartialWithRequiredKeyOf<NewRoomPriceFormRawValue> {
-    return {
-      ...roomPrice,
-      fromDate: roomPrice.fromDate ? roomPrice.fromDate.format(DATE_TIME_FORMAT) : undefined,
-      toDate: roomPrice.toDate ? roomPrice.toDate.format(DATE_TIME_FORMAT) : undefined,
     };
   }
 }

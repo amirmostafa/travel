@@ -80,7 +80,7 @@
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
           @for (agency of agencies; track trackId) {
             <tr data-cy="entityTable">
               <td>

@@ -36,4 +36,44 @@ export const EntityNavbarItems: NavbarItem[] = [
     route: '/room-price',
     translationKey: 'global.menu.entities.roomPrice',
   },
+  {
+    name: 'Currency',
+    route: '/currency',
+    translationKey: 'global.menu.entities.currency',
+  },
+  {
+    name: 'Testimonial',
+    route: '/testimonial',
+    translationKey: 'global.menu.entities.testimonial',
+  },
+  {
+    name: 'AboutUs',
+    route: '/about-us',
+    translationKey: 'global.menu.entities.aboutUs',
+  },
+  {
+    name: 'AgencyService',
+    route: '/agency-service',
+    translationKey: 'global.menu.entities.agencyService',
+  },
+  {
+    name: 'Payment',
+    route: '/payment',
+    translationKey: 'global.menu.entities.payment',
+  },
+  {
+    name: 'LoyaltyProgram',
+    route: '/loyalty-program',
+    translationKey: 'global.menu.entities.loyaltyProgram',
+  },
+  {
+    name: 'LoyaltyTransaction',
+    route: '/loyalty-transaction',
+    translationKey: 'global.menu.entities.loyaltyTransaction',
+  },
+  {
+    name: 'Image',
+    route: '/image',
+    translationKey: 'global.menu.entities.image',
+  },
 ];

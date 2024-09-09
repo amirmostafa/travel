@@ -1,0 +1,9 @@
+{
+  "travelApp": {
+    "TransactionType": {
+      "null": "",
+      "EARNED": "EARNED",
+      "REDEEMED": "REDEEMED"
+    }
+  }
+}

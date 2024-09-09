@@ -1,28 +1,27 @@
 import { IRoom, NewRoom } from './room.model';
 
 export const sampleWithRequiredData: IRoom = {
-  id: 6600,
-  roomNumber: 'titrate resign',
-  type: 'SUITE',
+  id: 9404,
+  roomNumber: 'civilize irritating the',
+  type: 'FAMILY',
 };
 
 export const sampleWithPartialData: IRoom = {
-  id: 26438,
-  roomNumber: 'cotton flawed sling',
-  type: 'FAMILY',
-  discountPercentage: 28.19,
+  id: 9575,
+  roomNumber: 'aw observation meanwhile',
+  type: 'DOUBLE',
 };
 
 export const sampleWithFullData: IRoom = {
-  id: 24359,
-  roomNumber: 'until protect',
+  id: 26701,
+  roomNumber: 'dabble',
   type: 'SUITE',
-  description: '../fake-data/blob/hipster.txt',
-  discountPercentage: 71.38,
+  description: 'shocking',
+  discountPercentage: 82.46,
 };
 
 export const sampleWithNewData: NewRoom = {
-  roomNumber: 'ugh less',
+  roomNumber: 'bangle',
   type: 'FAMILY',
   id: null,
 };

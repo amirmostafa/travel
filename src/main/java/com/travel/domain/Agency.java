@@ -1,11 +1,8 @@
 package com.travel.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -44,11 +41,6 @@ public class Agency implements Serializable {
 
     @Column(name = "website")
     private String website;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "agency")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "agency" }, allowSetters = true)
-    private Set<TourPackage> tourPackages = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -128,37 +120,6 @@ public class Agency implements Serializable {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public Set<TourPackage> getTourPackages() {
-        return this.tourPackages;
-    }
-
-    public void setTourPackages(Set<TourPackage> tourPackages) {
-        if (this.tourPackages != null) {
-            this.tourPackages.forEach(i -> i.setAgency(null));
-        }
-        if (tourPackages != null) {
-            tourPackages.forEach(i -> i.setAgency(this));
-        }
-        this.tourPackages = tourPackages;
-    }
-
-    public Agency tourPackages(Set<TourPackage> tourPackages) {
-        this.setTourPackages(tourPackages);
-        return this;
-    }
-
-    public Agency addTourPackage(TourPackage tourPackage) {
-        this.tourPackages.add(tourPackage);
-        tourPackage.setAgency(this);
-        return this;
-    }
-
-    public Agency removeTourPackage(TourPackage tourPackage) {
-        this.tourPackages.remove(tourPackage);
-        tourPackage.setAgency(null);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

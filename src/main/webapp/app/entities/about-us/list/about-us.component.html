@@ -1,0 +1,102 @@
+<div>
+  <h2 id="page-heading" data-cy="AboutUsHeading">
+    <span jhiTranslate="travelApp.aboutUs.home.title">Aboutuses</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [animation]="isLoading ? 'spin' : undefined"></fa-icon>
+        <span jhiTranslate="travelApp.aboutUs.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-about-us"
+        [routerLink]="['/about-us/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="travelApp.aboutUs.home.createLabel">Create a new About Us</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (aboutuses?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="travelApp.aboutUs.home.notFound">No Aboutuses found</span>
+    </div>
+  }
+
+  @if (aboutuses && aboutuses.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [sortState]="sortState" (sortChange)="navigateToWithComponentValues($event)">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="description">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.aboutUs.description">Description</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="contactDetails">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.aboutUs.contactDetails">Contact Details</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="additionalInfo">
+              <div class="d-flex">
+                <span jhiTranslate="travelApp.aboutUs.additionalInfo">Additional Info</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody infinite-scroll (scrolled)="loadNextPage()" [infiniteScrollDisabled]="!hasMorePage()" [infiniteScrollDistance]="0">
+          @for (aboutUs of aboutuses; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/about-us', aboutUs.id, 'view']">{{ aboutUs.id }}</a>
+              </td>
+              <td>{{ aboutUs.description }}</td>
+              <td>{{ aboutUs.contactDetails }}</td>
+              <td>{{ aboutUs.additionalInfo }}</td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/about-us', aboutUs.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/about-us', aboutUs.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(aboutUs)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

@@ -49,10 +49,10 @@ describe('RoomPrice Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Room query and add missing value', () => {
       const roomPrice: IRoomPrice = { id: 456 };
-      const room: IRoom = { id: 27441 };
+      const room: IRoom = { id: 6238 };
       roomPrice.room = room;
 
-      const roomCollection: IRoom[] = [{ id: 30682 }];
+      const roomCollection: IRoom[] = [{ id: 14315 }];
       jest.spyOn(roomService, 'query').mockReturnValue(of(new HttpResponse({ body: roomCollection })));
       const additionalRooms = [room];
       const expectedCollection: IRoom[] = [...additionalRooms, ...roomCollection];
@@ -71,7 +71,7 @@ describe('RoomPrice Management Update Component', () => {
 
     it('Should update editForm', () => {
       const roomPrice: IRoomPrice = { id: 456 };
-      const room: IRoom = { id: 1198 };
+      const room: IRoom = { id: 30434 };
       roomPrice.room = room;
 
       activatedRoute.data = of({ roomPrice });

@@ -1,36 +1,40 @@
 import { ICustomer, NewCustomer } from './customer.model';
 
 export const sampleWithRequiredData: ICustomer = {
-  id: 26687,
-  firstName: 'Ava',
-  lastName: 'Lowe',
-  email: 'ks@)Vn04_.6rT',
+  id: 3168,
+  firstName: 'Agustina',
+  lastName: 'Emard',
+  email: 'st)Vn@4_.6rT',
   phoneNumber: 'whoa',
+  loyaltyPoints: 902,
 };
 
 export const sampleWithPartialData: ICustomer = {
-  id: 14269,
-  firstName: 'Lucious',
-  lastName: 'Schulist',
-  email: '<iV[)#@ZYW..OyV',
-  phoneNumber: 'midst scope yowza',
-  address: 'pattern',
+  id: 21022,
+  firstName: 'Kaitlyn',
+  lastName: 'Wilderman',
+  email: 'iV@)#QZ.W.OO',
+  phoneNumber: 'cluttered in incidentally',
+  address: 'painter naturally',
+  loyaltyPoints: 9179,
 };
 
 export const sampleWithFullData: ICustomer = {
-  id: 20417,
-  firstName: 'Raphael',
-  lastName: 'Cummings',
-  email: ';Ot\\@9.}',
-  phoneNumber: 'establish how unlike',
-  address: 'reproachfully',
+  id: 16031,
+  firstName: 'Sheridan',
+  lastName: 'Braun',
+  email: '-}@8Renm2.&Z',
+  phoneNumber: 'canopy',
+  address: 'gee vaguely but',
+  loyaltyPoints: 13876,
 };
 
 export const sampleWithNewData: NewCustomer = {
-  firstName: 'Zelma',
-  lastName: 'Upton',
-  email: "d'BQ;@I.!j4P/f",
-  phoneNumber: 'manhandle eaves like',
+  firstName: 'Sadie',
+  lastName: 'Satterfield',
+  email: 'P/@q1nkb."QV-;c',
+  phoneNumber: 'claw',
+  loyaltyPoints: 22811,
   id: null,
 };
 

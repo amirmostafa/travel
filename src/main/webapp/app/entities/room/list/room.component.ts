@@ -11,11 +11,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ITEMS_PER_PAGE } from 'app/config/pagination.constants';
 import { SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { DataUtils } from 'app/core/util/data-util.service';
 import { ParseLinks } from 'app/core/util/parse-links.service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { RoomDeleteDialogComponent } from '../delete/room-delete-dialog.component';
 import { EntityArrayResponseType, RoomService } from '../service/room.service';
+import { RoomDeleteDialogComponent } from '../delete/room-delete-dialog.component';
 import { IRoom } from '../room.model';
 
 @Component({
@@ -51,7 +50,6 @@ export class RoomComponent implements OnInit {
   protected activatedRoute = inject(ActivatedRoute);
   protected sortService = inject(SortService);
   protected parseLinks = inject(ParseLinks);
-  protected dataUtils = inject(DataUtils);
   protected modalService = inject(NgbModal);
   protected ngZone = inject(NgZone);
 
@@ -73,14 +71,6 @@ export class RoomComponent implements OnInit {
 
   loadNextPage(): void {
     this.load();
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(base64String: string, contentType: string | null | undefined): void {
-    return this.dataUtils.openFile(base64String, contentType);
   }
 
   delete(room: IRoom): void {

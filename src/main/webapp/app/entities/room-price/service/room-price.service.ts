@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import dayjs from 'dayjs/esm';
 
 import { isPresent } from 'app/core/util/operators';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IRoomPrice, NewRoomPrice } from '../room-price.model';
@@ -101,8 +102,8 @@ export class RoomPriceService {
   protected convertDateFromClient<T extends IRoomPrice | NewRoomPrice | PartialUpdateRoomPrice>(roomPrice: T): RestOf<T> {
     return {
       ...roomPrice,
-      fromDate: roomPrice.fromDate?.toJSON() ?? null,
-      toDate: roomPrice.toDate?.toJSON() ?? null,
+      fromDate: roomPrice.fromDate?.format(DATE_FORMAT) ?? null,
+      toDate: roomPrice.toDate?.format(DATE_FORMAT) ?? null,
     };
   }
 

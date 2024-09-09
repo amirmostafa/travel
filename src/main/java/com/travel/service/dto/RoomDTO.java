@@ -1,7 +1,6 @@
 package com.travel.service.dto;
 
 import com.travel.domain.enumeration.RoomType;
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,7 +19,7 @@ public class RoomDTO implements Serializable {
     @NotNull
     private RoomType type;
 
-    @Lob
+    @Size(max = 65535)
     private String description;
 
     @DecimalMin(value = "0")

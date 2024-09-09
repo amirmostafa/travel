@@ -1,0 +1,45 @@
+{
+  "annotations": {
+    "changelogDate": "20240908171538"
+  },
+  "applications": ["travel"],
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "authorName",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "content",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength", "required"],
+      "fieldValidateRulesMaxlength": "65535"
+    },
+    {
+      "fieldName": "rating",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min", "max"],
+      "fieldValidateRulesMax": "5",
+      "fieldValidateRulesMin": "1"
+    },
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Testimonial",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "hotel",
+      "relationshipName": "hotel",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

@@ -79,8 +79,8 @@
                 <a [routerLink]="['/room-price', roomPrice.id, 'view']">{{ roomPrice.id }}</a>
               </td>
               <td>{{ roomPrice.price }}</td>
-              <td>{{ roomPrice.fromDate | formatMediumDatetime }}</td>
-              <td>{{ roomPrice.toDate | formatMediumDatetime }}</td>
+              <td>{{ roomPrice.fromDate | formatMediumDate }}</td>
+              <td>{{ roomPrice.toDate | formatMediumDate }}</td>
               <td>
                 @if (roomPrice.room) {
                   <div>

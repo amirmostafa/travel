@@ -1,7 +1,9 @@
 package com.travel.web.rest;
 
 import com.travel.repository.RoomRepository;
+import com.travel.service.RoomQueryService;
 import com.travel.service.RoomService;
+import com.travel.service.criteria.RoomCriteria;
 import com.travel.service.dto.RoomDTO;
 import com.travel.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -42,9 +44,12 @@ public class RoomResource {
 
     private final RoomRepository roomRepository;
 
-    public RoomResource(RoomService roomService, RoomRepository roomRepository) {
+    private final RoomQueryService roomQueryService;
+
+    public RoomResource(RoomService roomService, RoomRepository roomRepository, RoomQueryService roomQueryService) {
         this.roomService = roomService;
         this.roomRepository = roomRepository;
+        this.roomQueryService = roomQueryService;
     }
 
     /**
@@ -139,14 +144,31 @@ public class RoomResource {
      * {@code GET  /rooms} : get all the rooms.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of rooms in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<RoomDTO>> getAllRooms(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Rooms");
-        Page<RoomDTO> page = roomService.findAll(pageable);
+    public ResponseEntity<List<RoomDTO>> getAllRooms(
+        RoomCriteria criteria,
+        @org.springdoc.core.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Rooms by criteria: {}", criteria);
+
+        Page<RoomDTO> page = roomQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /rooms/count} : count all the rooms.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/count")
+    public ResponseEntity<Long> countRooms(RoomCriteria criteria) {
+        log.debug("REST request to count Rooms by criteria: {}", criteria);
+        return ResponseEntity.ok().body(roomQueryService.countByCriteria(criteria));
     }
 
     /**

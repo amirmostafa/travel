@@ -30,8 +30,6 @@ public class TourPackageDTO implements Serializable {
     @NotNull
     private Boolean available;
 
-    private AgencyDTO agency;
-
     public Long getId() {
         return id;
     }
@@ -80,14 +78,6 @@ public class TourPackageDTO implements Serializable {
         this.available = available;
     }
 
-    public AgencyDTO getAgency() {
-        return agency;
-    }
-
-    public void setAgency(AgencyDTO agency) {
-        this.agency = agency;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -119,7 +109,6 @@ public class TourPackageDTO implements Serializable {
             ", price=" + getPrice() +
             ", durationDays=" + getDurationDays() +
             ", available='" + getAvailable() + "'" +
-            ", agency=" + getAgency() +
             "}";
     }
 }

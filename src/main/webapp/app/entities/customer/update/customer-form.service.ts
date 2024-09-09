@@ -23,6 +23,7 @@ type CustomerFormGroupContent = {
   email: FormControl<ICustomer['email']>;
   phoneNumber: FormControl<ICustomer['phoneNumber']>;
   address: FormControl<ICustomer['address']>;
+  loyaltyPoints: FormControl<ICustomer['loyaltyPoints']>;
 };
 
 export type CustomerFormGroup = FormGroup<CustomerFormGroupContent>;
@@ -55,6 +56,9 @@ export class CustomerFormService {
         validators: [Validators.required],
       }),
       address: new FormControl(customerRawValue.address),
+      loyaltyPoints: new FormControl(customerRawValue.loyaltyPoints, {
+        validators: [Validators.required, Validators.min(0)],
+      }),
     });
   }
 

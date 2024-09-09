@@ -109,6 +109,59 @@
             </div>
           }
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_countryCode" jhiTranslate="travelApp.hotel.countryCode">Country Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="countryCode"
+            id="field_countryCode"
+            data-cy="countryCode"
+            formControlName="countryCode"
+          />
+          @if (editForm.get('countryCode')!.invalid && (editForm.get('countryCode')!.dirty || editForm.get('countryCode')!.touched)) {
+            <div>
+              @if (editForm.get('countryCode')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_cityCode" jhiTranslate="travelApp.hotel.cityCode">City Code</label>
+          <input type="text" class="form-control" name="cityCode" id="field_cityCode" data-cy="cityCode" formControlName="cityCode" />
+          @if (editForm.get('cityCode')!.invalid && (editForm.get('cityCode')!.dirty || editForm.get('cityCode')!.touched)) {
+            <div>
+              @if (editForm.get('cityCode')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_imageUrl" jhiTranslate="travelApp.hotel.imageUrl">Image Url</label>
+          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl" formControlName="imageUrl" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_testimonial" jhiTranslate="travelApp.hotel.testimonial">Testimonial</label>
+          <select
+            class="form-control"
+            id="field_testimonial"
+            data-cy="testimonial"
+            name="testimonial"
+            formControlName="testimonial"
+            [compareWith]="compareTestimonial"
+          >
+            <option [ngValue]="null"></option>
+            @for (testimonialOption of testimonialsSharedCollection; track $index) {
+              <option [ngValue]="testimonialOption">{{ testimonialOption.id }}</option>
+            }
+          </select>
+        </div>
       </div>
 
       <div>

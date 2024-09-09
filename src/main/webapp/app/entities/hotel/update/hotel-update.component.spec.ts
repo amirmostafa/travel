@@ -4,6 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of, Subject, from } from 'rxjs';
 
+import { ITestimonial } from 'app/entities/testimonial/testimonial.model';
+import { TestimonialService } from 'app/entities/testimonial/service/testimonial.service';
 import { HotelService } from '../service/hotel.service';
 import { IHotel } from '../hotel.model';
 import { HotelFormService } from './hotel-form.service';
@@ -16,6 +18,7 @@ describe('Hotel Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let hotelFormService: HotelFormService;
   let hotelService: HotelService;
+  let testimonialService: TestimonialService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -38,17 +41,43 @@ describe('Hotel Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     hotelFormService = TestBed.inject(HotelFormService);
     hotelService = TestBed.inject(HotelService);
+    testimonialService = TestBed.inject(TestimonialService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should update editForm', () => {
+    it('Should call Testimonial query and add missing value', () => {
       const hotel: IHotel = { id: 456 };
+      const testimonial: ITestimonial = { id: 13427 };
+      hotel.testimonial = testimonial;
+
+      const testimonialCollection: ITestimonial[] = [{ id: 5682 }];
+      jest.spyOn(testimonialService, 'query').mockReturnValue(of(new HttpResponse({ body: testimonialCollection })));
+      const additionalTestimonials = [testimonial];
+      const expectedCollection: ITestimonial[] = [...additionalTestimonials, ...testimonialCollection];
+      jest.spyOn(testimonialService, 'addTestimonialToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ hotel });
       comp.ngOnInit();
 
+      expect(testimonialService.query).toHaveBeenCalled();
+      expect(testimonialService.addTestimonialToCollectionIfMissing).toHaveBeenCalledWith(
+        testimonialCollection,
+        ...additionalTestimonials.map(expect.objectContaining),
+      );
+      expect(comp.testimonialsSharedCollection).toEqual(expectedCollection);
+    });
+
+    it('Should update editForm', () => {
+      const hotel: IHotel = { id: 456 };
+      const testimonial: ITestimonial = { id: 15892 };
+      hotel.testimonial = testimonial;
+
+      activatedRoute.data = of({ hotel });
+      comp.ngOnInit();
+
+      expect(comp.testimonialsSharedCollection).toContain(testimonial);
       expect(comp.hotel).toEqual(hotel);
     });
   });
@@ -118,6 +147,18 @@ describe('Hotel Management Update Component', () => {
       expect(hotelService.update).toHaveBeenCalled();
       expect(comp.isSaving).toEqual(false);
       expect(comp.previousState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Compare relationships', () => {
+    describe('compareTestimonial', () => {
+      it('Should forward to testimonialService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(testimonialService, 'compareTestimonial');
+        comp.compareTestimonial(entity, entity2);
+        expect(testimonialService.compareTestimonial).toHaveBeenCalledWith(entity, entity2);
+      });
     });
   });
 });

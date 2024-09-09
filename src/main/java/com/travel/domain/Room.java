@@ -35,8 +35,8 @@ public class Room implements Serializable {
     @Column(name = "type", nullable = false)
     private RoomType type;
 
-    @Lob
-    @Column(name = "description")
+    @Size(max = 65535)
+    @Column(name = "description", length = 65535)
     private String description;
 
     @DecimalMin(value = "0")
@@ -49,8 +49,13 @@ public class Room implements Serializable {
     @JsonIgnoreProperties(value = { "room" }, allowSetters = true)
     private Set<RoomPrice> roomPrices = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "room" }, allowSetters = true)
+    private Set<Image> images = new HashSet<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "rooms" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "rooms", "testimonial" }, allowSetters = true)
     private Hotel hotel;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -148,6 +153,37 @@ public class Room implements Serializable {
     public Room removeRoomPrice(RoomPrice roomPrice) {
         this.roomPrices.remove(roomPrice);
         roomPrice.setRoom(null);
+        return this;
+    }
+
+    public Set<Image> getImages() {
+        return this.images;
+    }
+
+    public void setImages(Set<Image> images) {
+        if (this.images != null) {
+            this.images.forEach(i -> i.setRoom(null));
+        }
+        if (images != null) {
+            images.forEach(i -> i.setRoom(this));
+        }
+        this.images = images;
+    }
+
+    public Room images(Set<Image> images) {
+        this.setImages(images);
+        return this;
+    }
+
+    public Room addImages(Image image) {
+        this.images.add(image);
+        image.setRoom(this);
+        return this;
+    }
+
+    public Room removeImages(Image image) {
+        this.images.remove(image);
+        image.setRoom(null);
         return this;
     }
 

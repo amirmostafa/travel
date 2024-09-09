@@ -4,35 +4,35 @@ import { IBooking, NewBooking } from './booking.model';
 
 export const sampleWithRequiredData: IBooking = {
   id: 30726,
-  bookingDate: dayjs('2024-08-26T04:26'),
-  startDate: dayjs('2024-08-26T18:36'),
-  endDate: dayjs('2024-08-26T08:06'),
+  bookingDate: dayjs('2024-08-26'),
+  startDate: dayjs('2024-08-26'),
+  endDate: dayjs('2024-08-26'),
   status: 'CANCELLED',
   totalPrice: 26386.76,
 };
 
 export const sampleWithPartialData: IBooking = {
   id: 14201,
-  bookingDate: dayjs('2024-08-26T10:17'),
-  startDate: dayjs('2024-08-26T05:18'),
-  endDate: dayjs('2024-08-26T19:20'),
+  bookingDate: dayjs('2024-08-26'),
+  startDate: dayjs('2024-08-26'),
+  endDate: dayjs('2024-08-26'),
   status: 'CONFIRMED',
   totalPrice: 28527.39,
 };
 
 export const sampleWithFullData: IBooking = {
   id: 29873,
-  bookingDate: dayjs('2024-08-25T20:57'),
-  startDate: dayjs('2024-08-26T08:44'),
-  endDate: dayjs('2024-08-26T16:39'),
+  bookingDate: dayjs('2024-08-25'),
+  startDate: dayjs('2024-08-26'),
+  endDate: dayjs('2024-08-26'),
   status: 'CONFIRMED',
   totalPrice: 5371.48,
 };
 
 export const sampleWithNewData: NewBooking = {
-  bookingDate: dayjs('2024-08-26T11:02'),
-  startDate: dayjs('2024-08-26T13:42'),
-  endDate: dayjs('2024-08-26T14:17'),
+  bookingDate: dayjs('2024-08-26'),
+  startDate: dayjs('2024-08-26'),
+  endDate: dayjs('2024-08-26'),
   status: 'CONFIRMED',
   totalPrice: 3245.05,
   id: null,

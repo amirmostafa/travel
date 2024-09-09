@@ -37,56 +37,48 @@
 
         <div class="mb-3">
           <label class="form-label" for="field_fromDate" jhiTranslate="travelApp.roomPrice.fromDate">From Date</label>
-          <div class="d-flex">
+          <div class="input-group">
             <input
               id="field_fromDate"
               data-cy="fromDate"
-              type="datetime-local"
+              type="text"
               class="form-control"
               name="fromDate"
+              ngbDatepicker
+              #fromDateDp="ngbDatepicker"
               formControlName="fromDate"
-              placeholder="YYYY-MM-DD HH:mm"
             />
+            <button type="button" class="btn btn-secondary" (click)="fromDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
           </div>
           @if (editForm.get('fromDate')!.invalid && (editForm.get('fromDate')!.dirty || editForm.get('fromDate')!.touched)) {
             <div>
               @if (editForm.get('fromDate')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('fromDate')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >This field should be a date and time.</small
-              >
             </div>
           }
         </div>
 
         <div class="mb-3">
           <label class="form-label" for="field_toDate" jhiTranslate="travelApp.roomPrice.toDate">To Date</label>
-          <div class="d-flex">
+          <div class="input-group">
             <input
               id="field_toDate"
               data-cy="toDate"
-              type="datetime-local"
+              type="text"
               class="form-control"
               name="toDate"
+              ngbDatepicker
+              #toDateDp="ngbDatepicker"
               formControlName="toDate"
-              placeholder="YYYY-MM-DD HH:mm"
             />
+            <button type="button" class="btn btn-secondary" (click)="toDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
           </div>
           @if (editForm.get('toDate')!.invalid && (editForm.get('toDate')!.dirty || editForm.get('toDate')!.touched)) {
             <div>
               @if (editForm.get('toDate')?.errors?.required) {
                 <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
               }
-              <small
-                class="form-text text-danger"
-                [hidden]="!editForm.get('toDate')?.errors?.datetimelocal"
-                jhiTranslate="entity.validation.datetimelocal"
-                >This field should be a date and time.</small
-              >
             </div>
           }
         </div>

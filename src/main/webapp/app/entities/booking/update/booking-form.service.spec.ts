@@ -25,8 +25,6 @@ describe('Booking Form Service', () => {
             endDate: expect.any(Object),
             status: expect.any(Object),
             totalPrice: expect.any(Object),
-            room: expect.any(Object),
-            tourPackage: expect.any(Object),
             customer: expect.any(Object),
           }),
         );
@@ -43,8 +41,6 @@ describe('Booking Form Service', () => {
             endDate: expect.any(Object),
             status: expect.any(Object),
             totalPrice: expect.any(Object),
-            room: expect.any(Object),
-            tourPackage: expect.any(Object),
             customer: expect.any(Object),
           }),
         );

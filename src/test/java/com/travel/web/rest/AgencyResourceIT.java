@@ -269,6 +269,324 @@ class AgencyResourceIT {
 
     @Test
     @Transactional
+    void getAgenciesByIdFiltering() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        Long id = agency.getId();
+
+        defaultAgencyFiltering("id.equals=" + id, "id.notEquals=" + id);
+
+        defaultAgencyFiltering("id.greaterThanOrEqual=" + id, "id.greaterThan=" + id);
+
+        defaultAgencyFiltering("id.lessThanOrEqual=" + id, "id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where name equals to
+        defaultAgencyFiltering("name.equals=" + DEFAULT_NAME, "name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where name in
+        defaultAgencyFiltering("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME, "name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where name is not null
+        defaultAgencyFiltering("name.specified=true", "name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByNameContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where name contains
+        defaultAgencyFiltering("name.contains=" + DEFAULT_NAME, "name.contains=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where name does not contain
+        defaultAgencyFiltering("name.doesNotContain=" + UPDATED_NAME, "name.doesNotContain=" + DEFAULT_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByAddressIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where address equals to
+        defaultAgencyFiltering("address.equals=" + DEFAULT_ADDRESS, "address.equals=" + UPDATED_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByAddressIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where address in
+        defaultAgencyFiltering("address.in=" + DEFAULT_ADDRESS + "," + UPDATED_ADDRESS, "address.in=" + UPDATED_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByAddressIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where address is not null
+        defaultAgencyFiltering("address.specified=true", "address.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByAddressContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where address contains
+        defaultAgencyFiltering("address.contains=" + DEFAULT_ADDRESS, "address.contains=" + UPDATED_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByAddressNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where address does not contain
+        defaultAgencyFiltering("address.doesNotContain=" + UPDATED_ADDRESS, "address.doesNotContain=" + DEFAULT_ADDRESS);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByContactNumberIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where contactNumber equals to
+        defaultAgencyFiltering("contactNumber.equals=" + DEFAULT_CONTACT_NUMBER, "contactNumber.equals=" + UPDATED_CONTACT_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByContactNumberIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where contactNumber in
+        defaultAgencyFiltering(
+            "contactNumber.in=" + DEFAULT_CONTACT_NUMBER + "," + UPDATED_CONTACT_NUMBER,
+            "contactNumber.in=" + UPDATED_CONTACT_NUMBER
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByContactNumberIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where contactNumber is not null
+        defaultAgencyFiltering("contactNumber.specified=true", "contactNumber.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByContactNumberContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where contactNumber contains
+        defaultAgencyFiltering("contactNumber.contains=" + DEFAULT_CONTACT_NUMBER, "contactNumber.contains=" + UPDATED_CONTACT_NUMBER);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByContactNumberNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where contactNumber does not contain
+        defaultAgencyFiltering(
+            "contactNumber.doesNotContain=" + UPDATED_CONTACT_NUMBER,
+            "contactNumber.doesNotContain=" + DEFAULT_CONTACT_NUMBER
+        );
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByEmailIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where email equals to
+        defaultAgencyFiltering("email.equals=" + DEFAULT_EMAIL, "email.equals=" + UPDATED_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByEmailIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where email in
+        defaultAgencyFiltering("email.in=" + DEFAULT_EMAIL + "," + UPDATED_EMAIL, "email.in=" + UPDATED_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByEmailIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where email is not null
+        defaultAgencyFiltering("email.specified=true", "email.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByEmailContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where email contains
+        defaultAgencyFiltering("email.contains=" + DEFAULT_EMAIL, "email.contains=" + UPDATED_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByEmailNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where email does not contain
+        defaultAgencyFiltering("email.doesNotContain=" + UPDATED_EMAIL, "email.doesNotContain=" + DEFAULT_EMAIL);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByWebsiteIsEqualToSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where website equals to
+        defaultAgencyFiltering("website.equals=" + DEFAULT_WEBSITE, "website.equals=" + UPDATED_WEBSITE);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByWebsiteIsInShouldWork() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where website in
+        defaultAgencyFiltering("website.in=" + DEFAULT_WEBSITE + "," + UPDATED_WEBSITE, "website.in=" + UPDATED_WEBSITE);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByWebsiteIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where website is not null
+        defaultAgencyFiltering("website.specified=true", "website.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByWebsiteContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where website contains
+        defaultAgencyFiltering("website.contains=" + DEFAULT_WEBSITE, "website.contains=" + UPDATED_WEBSITE);
+    }
+
+    @Test
+    @Transactional
+    void getAllAgenciesByWebsiteNotContainsSomething() throws Exception {
+        // Initialize the database
+        insertedAgency = agencyRepository.saveAndFlush(agency);
+
+        // Get all the agencyList where website does not contain
+        defaultAgencyFiltering("website.doesNotContain=" + UPDATED_WEBSITE, "website.doesNotContain=" + DEFAULT_WEBSITE);
+    }
+
+    private void defaultAgencyFiltering(String shouldBeFound, String shouldNotBeFound) throws Exception {
+        defaultAgencyShouldBeFound(shouldBeFound);
+        defaultAgencyShouldNotBeFound(shouldNotBeFound);
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultAgencyShouldBeFound(String filter) throws Exception {
+        restAgencyMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(agency.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
+            .andExpect(jsonPath("$.[*].contactNumber").value(hasItem(DEFAULT_CONTACT_NUMBER)))
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].website").value(hasItem(DEFAULT_WEBSITE)));
+
+        // Check, that the count call also returns 1
+        restAgencyMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultAgencyShouldNotBeFound(String filter) throws Exception {
+        restAgencyMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restAgencyMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
+    }
+
+    @Test
+    @Transactional
     void getNonExistingAgency() throws Exception {
         // Get the agency
         restAgencyMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
